@@ -9,6 +9,7 @@
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/memorandum-auth/pom.xml" />
+        <option value="$PROJECT_DIR$/memorandum-event/pom.xml" />
       </list>
     </option>
   </component>
