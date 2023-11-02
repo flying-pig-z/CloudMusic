@@ -14,6 +14,13 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <modules>
+        <module>/memorandum-auth</module>
+        <module>/memorandum-event</module>
+        <module>/memorandum-note</module>
+        <module>/eureka-server</module>
+    </modules>
+
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
@@ -26,18 +33,32 @@
         <spring-cloud.version>Hoxton.SR9</spring-cloud.version>
     </properties>
 
+
     <dependencies>
+<!--        lombok-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
         </dependency>
+<!--        springboot-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+<!--        cloud-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-dependencies</artifactId>
             <version>${spring-cloud.version}</version>
             <type>pom</type>
             <scope>import</scope>
+        </dependency>
+<!--        swagger-->
+        <dependency>
+            <groupId>com.spring4all</groupId>
+            <artifactId>swagger-spring-boot-starter</artifactId>
+            <version>1.9.0.RELEASE</version>
         </dependency>
     </dependencies>
 
@@ -67,7 +88,6 @@
                 <artifactId>activation</artifactId>
                 <version>${activation.version}</version>
             </dependency>
-
         </dependencies>
     </dependencyManagement>
 

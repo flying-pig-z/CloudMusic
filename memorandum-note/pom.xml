@@ -8,10 +8,10 @@
         <version>1.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>memorandum-event</artifactId>
+    <artifactId>memorandum-note</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>memorandum-event</name>
-    <description>memorandum-event</description>
+    <name>memorandum-note</name>
+    <description>memorandum-note</description>
     <properties>
         <java.version>17</java.version>
     </properties>

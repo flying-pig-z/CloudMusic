@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: memorandum-event
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/memorandum
+    username: root
+    password: "@Aa123456"
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+server:
+  port: 9090
+  servlet:
+    encoding:
+      charset: UTF-8
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10086/eureka
+swagger:
+  title: "?????????????"
+  description: "?????????????"
+  base-package: com.flyingpig.memorandumevent
+  enabled: true
+  version: 1.0.0
+
+
