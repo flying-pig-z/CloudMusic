@@ -8,5 +8,7 @@ eureka:
     service-url:
       defaultZone: http://127.0.0.1:10086/eureka
       fetch-registry: false
-#  server:
-#      enable-self-preservation: false
+ribbon:
+  eager-load:
+    enabled: true
+    clients: userservice

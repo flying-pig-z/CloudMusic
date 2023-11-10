@@ -31,7 +31,7 @@ public class EventServiceImpl implements EventService {
         Event event=eventMapper.selectById(eventId);
         //2.远程查询notes
         //2.1 url地址
-        String url="http://localhost:8081/event-notes/notes-of-event?eventId="+event.getId();
+        String url="http://noteservice/event-notes/notes-of-event?eventId="+event.getId();
         //2.2 发起调用(技术点：怎么返回list对象)
         Result eventNoteListResult = restTemplate.getForObject(url, Result.class);
         //2.3 存入eventNoteList
