@@ -11,7 +11,6 @@
         <option value="$PROJECT_DIR$/memorandum-auth/pom.xml" />
         <option value="$PROJECT_DIR$/memorandum-event/pom.xml" />
         <option value="$PROJECT_DIR$/memorandum-note/pom.xml" />
-        <option value="$PROJECT_DIR$/eureka-server/pom.xml" />
       </list>
     </option>
   </component>

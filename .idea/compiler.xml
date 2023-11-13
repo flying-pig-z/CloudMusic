@@ -10,9 +10,11 @@
         <module name="memorandum-auth" />
         <module name="memorandum-event" />
         <module name="memorandum-note" />
-        <module name="eureka-server" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="eureka-server" target="11" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
