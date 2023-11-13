@@ -16,9 +16,4 @@ public class MemorandumEventApplication {
     public static void main(String[] args) {
         SpringApplication.run(MemorandumEventApplication.class, args);
     }
-    @Bean
-    @LoadBalanced
-    public RestTemplate restTemplate(){
-        return new RestTemplate();
-    }
 }

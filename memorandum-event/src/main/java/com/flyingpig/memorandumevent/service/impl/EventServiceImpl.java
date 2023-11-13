@@ -1,5 +1,6 @@
 package com.flyingpig.memorandumevent.service.impl;
 
+import com.flyingpig.memorandumevent.clients.NoteClient;
 import com.flyingpig.memorandumevent.common.Result;
 import com.flyingpig.memorandumevent.dataobject.dto.EventWithNotes;
 import com.flyingpig.memorandumevent.dataobject.enetity.Event;
@@ -23,18 +24,14 @@ public class EventServiceImpl implements EventService {
     @Autowired
     private EventMapper eventMapper;
     @Autowired
-    private RestTemplate restTemplate;
+    private NoteClient noteClient;
 
     @Override
     public EventWithNotes selectEventDetailByEventId(Integer eventId) {
-        //1.查询事件
         Event event=eventMapper.selectById(eventId);
-        //2.远程查询notes
-        //2.1 url地址
-        String url="http://noteservice/event-notes/notes-of-event?eventId="+event.getId();
-        //2.2 发起调用(技术点：怎么返回list对象)
-        Result eventNoteListResult = restTemplate.getForObject(url, Result.class);
-        //2.3 存入eventNoteList
+        //发起调用
+        Result eventNoteListResult = noteClient.listEventNotesByEventId(eventId);
+        //存入eventNoteList
         EventWithNotes eventWithNotes=new EventWithNotes();
         eventWithNotes.setContent(event.getContent());
         eventWithNotes.setDeadline(event.getDeadline());
