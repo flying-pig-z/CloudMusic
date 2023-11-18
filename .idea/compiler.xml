@@ -10,6 +10,7 @@
         <module name="memorandum-auth" />
         <module name="memorandum-event" />
         <module name="memorandum-note" />
+        <module name="gateway" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -19,6 +20,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="eureka-server" options="-parameters" />
+      <module name="gateway" options="-parameters" />
       <module name="memorandum-auth" options="-parameters" />
       <module name="memorandum-event" options="-parameters" />
       <module name="memorandum-note" options="-parameters" />
