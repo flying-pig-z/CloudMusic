@@ -16,7 +16,7 @@
 
     <modules>
         <module>/gateway</module>
-        <module>/cloudemusic-auth</module>
+        <module>/cloudmusic-auth</module>
         <module>/cloudmusic-music</module>
         <module>/cloudmusic-songlist</module>
     </modules>

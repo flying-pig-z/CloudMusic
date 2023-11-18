@@ -8,7 +8,7 @@
         <version>1.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>cloudemusic-auth</artifactId>
+    <artifactId>cloudmusic-auth</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>cloudemusic-auth</name>
     <description>cloudemusic-auth</description>
