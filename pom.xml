@@ -41,11 +41,7 @@
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
         </dependency>
-<!--        springboot-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
+
 <!--        openfeign远程连接-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>

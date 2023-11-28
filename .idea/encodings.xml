@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/cloudmusic-auth/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/cloudmusic-auth/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/cloudmusic-music/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/cloudmusic-music/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/cloudmusic-songlist/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/cloudmusic-songlist/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/eureka-server/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/eureka-server/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/gateway/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/gateway/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/memorandum-auth/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/memorandum-auth/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/memorandum-event/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/memorandum-event/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/memorandum-note/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/memorandum-note/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
     <file url="PROJECT" charset="UTF-8" />
