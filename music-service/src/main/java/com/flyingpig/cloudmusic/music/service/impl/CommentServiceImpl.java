@@ -51,4 +51,9 @@ public class CommentServiceImpl implements CommentService {
         PageBean resultPage=new PageBean(commentIPage.getTotal(),resultList);
         return resultPage;
     }
+
+    @Override
+    public void addComment(Comment addComment) {
+        commentMapper.insert(addComment);
+    }
 }
