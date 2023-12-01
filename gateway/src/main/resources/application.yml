@@ -11,15 +11,17 @@ spring:
         - id: music-service # 路由id，自定义，只要唯一即可
           uri: lb://music-service # 路由的目标地址 lb就是负载均衡，后面跟服务名称
           predicates:
-            - Path=/music-service/**
+            - Path=/musics/**
+            - Path=/comments/**
         - id: songlist-service
           uri: lb://songlist-service
           predicates: # 路由断言，也就是判断请求是否符合路由规则的条件
-            - Path=/songlist-service/**
+            - Path=/songlists/**
         - id: auth-service
           uri: lb://auth-service
           predicates: # 路由断言，也就是判断请求是否符合路由规则的条件
-            - Path=/auth-service/** # 这个是按照路径匹配，只要以/songlist/开头就符合要求
+            - Path=/users/** # 路径匹配
+            - Path=/mail/**
       globalcors: # 全局的跨域处理
         add-to-simple-url-handler-mapping: true # 解决options请求被拦截问题
         corsConfigurations:

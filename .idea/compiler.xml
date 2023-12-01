@@ -7,10 +7,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="music-service" />
+        <module name="auth-service" />
+        <module name="common" />
         <module name="gateway" />
-        <module name="cloudmusic-music" />
-        <module name="cloudmusic-songlist" />
-        <module name="cloudmusic-auth" />
+        <module name="feign-api" />
+        <module name="songlist-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -19,11 +21,12 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="cloudmusic-auth" options="-parameters" />
-      <module name="cloudmusic-music" options="-parameters" />
-      <module name="cloudmusic-songlist" options="-parameters" />
+      <module name="auth-service" options="-parameters" />
       <module name="eureka-server" options="-parameters" />
+      <module name="feign-api" options="-parameters" />
       <module name="gateway" options="-parameters" />
+      <module name="music-service" options="-parameters" />
+      <module name="songlist-service" options="-parameters" />
     </option>
   </component>
 </project>
