@@ -13,6 +13,10 @@ spring:
     url: jdbc:mysql://localhost:3306/cloudmusic
     username: root
     password: "@Aa123456"
+  redis:
+    database: 0
+    host: localhost
+    port: 6379
   cloud:
     nacos:
       server-addr: http://47.122.56.65:8848
@@ -34,7 +38,7 @@ mybatis:
 swagger:
   title: "音乐模块"
   description: "音乐模块接口"
-  base-package: com.flyingpig.cloudmusic.music
+  base-package: com.flyingpig.cloudmusic
   enabled: true
   version: 1.0.0
 #feign远程调用配置

@@ -13,7 +13,6 @@
         <option value="$PROJECT_DIR$/memorandum-note/pom.xml" />
         <option value="$PROJECT_DIR$/gateway/pom.xml" />
         <option value="$PROJECT_DIR$/feign-api/pom.xml" />
-        <option value="$PROJECT_DIR$/common/pom.xml" />
       </list>
     </option>
   </component>
