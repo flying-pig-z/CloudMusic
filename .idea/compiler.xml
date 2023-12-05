@@ -9,19 +9,20 @@
         <outputRelativeToContentRoot value="true" />
         <module name="music-service" />
         <module name="auth-service" />
+        <module name="common" />
         <module name="gateway" />
         <module name="feign-api" />
         <module name="songlist-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="common" target="1.8" />
       <module name="eureka-server" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="auth-service" options="-parameters" />
+      <module name="common" options="-parameters" />
       <module name="eureka-server" options="-parameters" />
       <module name="feign-api" options="-parameters" />
       <module name="gateway" options="-parameters" />

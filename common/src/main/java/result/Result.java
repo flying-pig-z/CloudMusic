@@ -1,4 +1,4 @@
-package com.flyingpig.cloudmusic.songlist.common;
+package result;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Result {
-    private Integer code;//响应码
+    private Integer code;//响应码，token过期返回0，正确返回1，异常返回2
     private String msg;//响应信息，描述字符串
     private Object data;//返回的数据
 
@@ -22,9 +22,14 @@ public class Result {
         return new Result(1, "success", data);
     }
 
-    //查询 失败响应
-    public static Result error(Integer code,String msg) {
-        return new Result(code, msg, null);
+    //失败响应
+    public static Result error(String msg) {
+        return new Result(2, msg, null);
+    }
+
+    //token过期
+    public static Result tokenExpire(String msg)  {
+        return new Result(0, msg, null);
     }
 
 }

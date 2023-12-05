@@ -19,6 +19,7 @@
         <module>/auth-service</module>
         <module>/music-service</module>
         <module>/songlist-service</module>
+        <module>common</module>
     </modules>
 
     <properties>
@@ -35,6 +36,11 @@
 
 
     <dependencies>
+        <dependency>
+            <groupId>com.flyingpig</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 <!--        lombok-->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -76,6 +82,7 @@
             <artifactId>commons-beanutils</artifactId>
             <version>1.9.3</version>
         </dependency>
+
     </dependencies>
 
     <!--统一管理依赖版本-->

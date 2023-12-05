@@ -35,12 +35,12 @@ public class MailController {
     public Result sendEmailVerificationCode(@RequestParam String email) {
         //检查email是否符合格式
         if(!EmailUtil.judgeEmailFormat(email)){
-            return Result.error(2,"邮箱不符合格式");
+            return Result.error("邮箱不符合格式");
         }
         //检查redis中有无验证码，如果有，则返回已存在
         String verificationCode=redisCache.getCacheObject(email);
         if(verificationCode!=null){
-            return Result.error(2,"发送过于频繁，请一分钟后再试");
+            return Result.error("发送过于频繁，请一分钟后再试");
         }else {
             //如果没有，生成验证码存入缓存并发送
             verificationCode = EmailUtil.createVerificationCode();
@@ -72,7 +72,7 @@ public class MailController {
             loginService.addUser(user);
             return Result.success("添加成功,请联系管理员审核");
         }else {
-            return Result.error(2,"验证码验证错误");
+            return Result.error("验证码验证错误");
         }
 
     }

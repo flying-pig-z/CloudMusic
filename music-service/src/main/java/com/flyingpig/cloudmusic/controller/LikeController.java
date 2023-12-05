@@ -3,6 +3,7 @@ package com.flyingpig.cloudmusic.controller;
 import com.flyingpig.cloudmusic.common.Result;
 import com.flyingpig.cloudmusic.dataobject.entity.Like;
 import com.flyingpig.cloudmusic.service.LikeService;
+import com.flyingpig.cloudmusic.service.MusicService;
 import com.flyingpig.cloudmusic.util.JwtUtil;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class LikeController {
     @Autowired
     LikeService likeService;
+
     @PostMapping("")
     public Result likeMusic(@RequestHeader String Authorization, @RequestParam Long musicId){
         Claims claims = JwtUtil.parseJwt(Authorization);

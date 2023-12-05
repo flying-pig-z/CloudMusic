@@ -2,7 +2,9 @@ package com.flyingpig.cloudmusic.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.flyingpig.cloudmusic.dataobject.entity.Collection;
+import com.flyingpig.cloudmusic.dataobject.entity.Music;
 import com.flyingpig.cloudmusic.mapper.CollectionMapper;
+import com.flyingpig.cloudmusic.mapper.MusicMapper;
 import com.flyingpig.cloudmusic.service.CollectionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class CollectionServiceImpl implements CollectionService {
     @Autowired
     CollectionMapper collectionMapper;
-
+    @Autowired
+    MusicMapper musicMapper;
     @Override
     public void collectMusic(Collection collection) {
+        Music music=musicMapper.selectById(collection.getMusicId());
+        music.setCollectNum(music.getCollectNum()+1);
+        musicMapper.updateById(music);
         collectionMapper.insert(collection);
     }
 
@@ -27,6 +33,9 @@ public class CollectionServiceImpl implements CollectionService {
         collectionLambdaQueryWrapper.eq(Collection::getMusicId,collection.getMusicId());
         collectionLambdaQueryWrapper.eq(Collection::getUserId,collection.getUserId());
         collectionMapper.delete(collectionLambdaQueryWrapper);
+        Music music=musicMapper.selectById(collection.getMusicId());
+        music.setCollectNum(music.getCollectNum()-1);
+        musicMapper.updateById(music);
     }
 
 

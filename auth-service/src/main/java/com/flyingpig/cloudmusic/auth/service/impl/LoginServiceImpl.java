@@ -1,13 +1,11 @@
 package com.flyingpig.cloudmusic.auth.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.flyingpig.cloudmusic.auth.common.Result;
 import com.flyingpig.cloudmusic.auth.dataobject.dto.LoginUser;
 import com.flyingpig.cloudmusic.auth.dataobject.entity.User;
 import com.flyingpig.cloudmusic.auth.mapper.UserMapper;
 import com.flyingpig.cloudmusic.auth.service.LoginService;
-import com.flyingpig.cloudmusic.auth.util.JwtUtil;
 import com.flyingpig.cloudmusic.auth.util.RedisCache;
 import com.flyingpig.feign.dataobject.dto.UserInfo;
 import org.springframework.beans.BeanUtils;
@@ -17,6 +15,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import util.JwtUtil;
 
 import java.util.HashMap;
 import java.util.Map;

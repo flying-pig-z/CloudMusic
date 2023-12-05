@@ -23,6 +23,7 @@ public class Music {
     private String coverPath;
     private String musicPath;
     private Long likeNum;
+    private Long collectNum;
     private Long uploadUser;
     private String singerName;
 }

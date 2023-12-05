@@ -23,7 +23,7 @@ public class UserController {
             System.out.println(user);
             return loginService.login(user);
         } catch (Exception e) {
-            return Result.error(2,"账号或密码错误，请重新登录");
+            return Result.error("账号或密码错误，请重新登录");
 
         }
     }
