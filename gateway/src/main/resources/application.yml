@@ -13,10 +13,13 @@ spring:
           predicates:
             - Path=/musics/**
             - Path=/comments/**
+            - Path=/likes/**
+            - Path=/collections/**
         - id: songlist-service
           uri: lb://songlist-service
           predicates: # 路由断言，也就是判断请求是否符合路由规则的条件
             - Path=/songlists/**
+            - Path=/songlist-musics/**
         - id: auth-service
           uri: lb://auth-service
           predicates: # 路由断言，也就是判断请求是否符合路由规则的条件
@@ -26,8 +29,8 @@ spring:
         add-to-simple-url-handler-mapping: true # 解决options请求被拦截问题
         corsConfigurations:
           '[/**]':
-#            allowedOrigins: # 允许哪些网站的跨域请求
-#              - "http://localhost:8090"
+            allowedOrigins: # 允许哪些网站的跨域请求
+              - "*"
             allowedMethods: # 允许的跨域ajax的请求方式
               - "GET"
               - "POST"
@@ -37,3 +40,7 @@ spring:
             allowedHeaders: "*" # 允许在请求中携带的头信息
             allowCredentials: true # 是否允许携带cookie
             maxAge: 360000 # 这次跨域检测的有效期
+
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE

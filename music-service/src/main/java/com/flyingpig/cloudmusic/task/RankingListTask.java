@@ -26,7 +26,7 @@ public class RankingListTask {
     @Autowired
     RedisTemplate redisTemplate;
     //每天0点和12点进行排行榜的更新
-    @Scheduled(cron = "*/10 * * * * ?")
+    @Scheduled(cron = "0 */5 * * * *")
     public void rankingListTask(){
         redisTemplate.opsForValue().set("musicCache::musicRankList", musicMapper.selectRankList());
     }

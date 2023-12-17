@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient("auth-service")
-@RequestMapping("/users")
 public interface UserClients {
-    @GetMapping("/user-info/{userId}")
+    @GetMapping("/users/user-info/{userId}")
     UserInfo selectUserInfoByUserId(@PathVariable("userId") Long userId);
 }

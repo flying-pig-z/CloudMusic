@@ -1,0 +1,3 @@
+com\flyingpig\cloudmusic\result\Result.class
+com\flyingpig\cloudmusic\util\JwtUtil.class
+com\flyingpig\cloudmusic\util\AliOSSUtils.class

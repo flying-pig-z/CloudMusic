@@ -1,19 +1,22 @@
 package com.flyingpig.cloudmusic.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.flyingpig.cloudmusic.dataobject.dto.MusicDetail;
+import com.flyingpig.cloudmusic.dataobject.dto.MusicIdAndName;
 import com.flyingpig.cloudmusic.dataobject.dto.MusicInfoInRankList;
 import com.flyingpig.cloudmusic.dataobject.entity.Collection;
 import com.flyingpig.cloudmusic.dataobject.entity.Like;
 import com.flyingpig.cloudmusic.dataobject.entity.Music;
-import com.flyingpig.cloudmusic.dataobject.dto.MusicDT0;
+import com.flyingpig.cloudmusic.dataobject.dto.MusicInfo;
 import com.flyingpig.cloudmusic.mapper.CollectionMapper;
 import com.flyingpig.cloudmusic.mapper.LikeMapper;
 import com.flyingpig.cloudmusic.mapper.MusicMapper;
 import com.flyingpig.cloudmusic.service.MusicService;
+import com.flyingpig.feign.clients.UserClients;
+import com.flyingpig.feign.dataobject.dto.UserInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
@@ -21,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author flyingpig
@@ -37,13 +39,14 @@ public class MusicServiceImpl implements MusicService {
     @Autowired
     private CollectionMapper collectionMapper;
     @Autowired
+    private UserClients userClients;
+    @Autowired
     private RedisTemplate redisTemplate;
 
     @Override
-    public MusicDT0 selectMusicVOByUserIdAndMusicId(Long userId, Long musicId) {
+    public MusicInfo selectMusicInfoByUserIdAndMusicId(Long userId, Long musicId) {
         Music music = musicMapper.selectById(musicId);
-
-        MusicDT0 result = new MusicDT0();
+        MusicInfo result = new MusicInfo();
         BeanUtils.copyProperties(music, result); // 将 music 对象属性值复制到 result 对象上
         LambdaQueryWrapper<Like> likeLambdaQueryWrapper = new LambdaQueryWrapper<>();
         likeLambdaQueryWrapper.eq(Like::getUserId, userId).eq(Like::getMusicId, musicId);
@@ -61,6 +64,8 @@ public class MusicServiceImpl implements MusicService {
         }else {
             result.setCollectOrNot(true);
         }
+        UserInfo uploadUser=userClients.selectUserInfoByUserId(music.getUploadUser());
+        result.setUploadUserName(uploadUser.getUsername());
         return result;
     }
 
@@ -69,6 +74,35 @@ public class MusicServiceImpl implements MusicService {
         ValueOperations<String, List<MusicInfoInRankList>> operation = redisTemplate.opsForValue();
         List<MusicInfoInRankList> result= operation.get("musicCache::musicRankList");
         return result;
+    }
+
+    @Override
+    public MusicDetail selectMusicDetailByMusicId(Long musicId) {
+        Music music = musicMapper.selectById(musicId);
+        MusicDetail result = new MusicDetail();
+        BeanUtils.copyProperties(music, result); // 将 music 对象属性值复制到 result 对象上
+        UserInfo uploadUser=userClients.selectUserInfoByUserId(music.getUploadUser());
+        result.setUploadUserName(uploadUser.getUsername());
+        return result;
+    }
+
+    @Override
+    public List<MusicIdAndName> searchMusic(String keyword) {
+        LambdaQueryWrapper<Music> musicLambdaQueryWrapper=new LambdaQueryWrapper<>();
+        musicLambdaQueryWrapper.like(Music::getName,keyword);
+        List<Music> musics=musicMapper.selectList(musicLambdaQueryWrapper);
+        List<MusicIdAndName> result=new ArrayList<>();
+        for(Music music:musics){
+            MusicIdAndName musicIdAndName=new MusicIdAndName();
+            BeanUtils.copyProperties(music,musicIdAndName);
+            result.add(musicIdAndName);
+        }
+        return result;
+    }
+
+    @Override
+    public void addMusic(Music music) {
+        musicMapper.insert(music);
     }
 
 

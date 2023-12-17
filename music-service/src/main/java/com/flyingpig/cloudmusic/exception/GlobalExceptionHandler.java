@@ -2,7 +2,7 @@ package com.flyingpig.cloudmusic.exception;
 
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import result.Result;
+import com.flyingpig.cloudmusic.result.Result;
 
 //全局异常处理器
 @RestControllerAdvice
@@ -11,8 +11,8 @@ public class GlobalExceptionHandler {
     public Result ex(Exception ex) {
         ex.printStackTrace();
         if (ex instanceof io.jsonwebtoken.ExpiredJwtException) {
-            return Result.tokenExpire("token过期");
+            return Result.error(401,"token过期或没有权限");
         }
-        return Result.error("对不起，操作失败，请联系管理员");
+        return Result.error(500,"对不起，操作失败，请联系管理员");
     }
 }

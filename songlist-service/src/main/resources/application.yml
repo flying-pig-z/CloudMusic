@@ -10,7 +10,7 @@ spring:
     name: songlist-service
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/cloudmusic
+    url: jdbc:mysql://111.229.173.12:3306/cloudmusic
     username: root
     password: "@Aa123456"
   cloud:
@@ -18,6 +18,8 @@ spring:
       server-addr: http://47.122.56.65:8848
       discovery:
         cluster-name: FJ # 集群名称
+        ip: 47.122.56.65 # 注册到nacos的ip与端口
+        port: 8081
 #ribbon配置
 songlistservice:
     ribbon:

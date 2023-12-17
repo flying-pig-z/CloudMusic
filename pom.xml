@@ -20,6 +20,7 @@
         <module>/music-service</module>
         <module>/songlist-service</module>
         <module>common</module>
+        <module>feign-api</module>
     </modules>
 
     <properties>
@@ -36,11 +37,6 @@
 
 
     <dependencies>
-        <dependency>
-            <groupId>com.flyingpig</groupId>
-            <artifactId>common</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
 <!--        lombok-->
         <dependency>
             <groupId>org.projectlombok</groupId>
