@@ -6,10 +6,10 @@ import com.flyingpig.cloudmusic.result.Result;
 import com.flyingpig.feign.dataobject.dto.UserInfo;
 import org.springframework.stereotype.Service;
 
-@Service
+
 public interface UserService {
     Result login(User user);
-    Result logout(Long userId);
+    Result logout(String uuid);
 
     void addUser(User user);
 

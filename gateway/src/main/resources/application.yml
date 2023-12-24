@@ -8,23 +8,40 @@ spring:
       server-addr: http://47.122.56.65:8848 # nacos地址
     gateway:
       routes: # 网关路由配置
-        - id: music-service # 路由id，自定义，只要唯一即可
+        - id: music-service-music
           uri: lb://music-service # 路由的目标地址 lb就是负载均衡，后面跟服务名称
           predicates:
             - Path=/musics/**
+        - id: music-service-comment
+          uri: lb://music-service # 路由的目标地址 lb就是负载均衡，后面跟服务名称
+          predicates:
             - Path=/comments/**
+        - id: music-service-like
+          uri: lb://music-service # 路由的目标地址 lb就是负载均衡，后面跟服务名称
+          predicates:
             - Path=/likes/**
+        - id: music-service-collection
+          uri: lb://music-service # 路由的目标地址 lb就是负载均衡，后面跟服务名称
+          predicates:
             - Path=/collections/**
-        - id: songlist-service
+
+        - id: songlist-service-songlist
           uri: lb://songlist-service
           predicates: # 路由断言，也就是判断请求是否符合路由规则的条件
             - Path=/songlists/**
+        - id: songlist-service-songlistmusic
+          uri: lb://songlist-service
+          predicates:
             - Path=/songlist-musics/**
-        - id: auth-service
+
+        - id: auth-service-user
           uri: lb://auth-service
           predicates: # 路由断言，也就是判断请求是否符合路由规则的条件
             - Path=/users/** # 路径匹配
-            - Path=/mail/**
+        - id: auth-service-email
+          uri: lb://auth-service
+          predicates: # 路由断言，也就是判断请求是否符合路由规则的条件
+            - Path=/email/** # 路径匹配
       globalcors: # 全局的跨域处理
         add-to-simple-url-handler-mapping: true # 解决options请求被拦截问题
         corsConfigurations:

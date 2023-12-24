@@ -11,4 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface UserClients {
     @GetMapping("/users/user-info/{userId}")
     UserInfo selectUserInfoByUserId(@PathVariable("userId") Long userId);
+
+    @GetMapping("/users/blacklist")
+    boolean uuidIsInBlackListOrNot(@RequestParam String uuid);
 }

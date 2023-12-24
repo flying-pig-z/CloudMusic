@@ -20,13 +20,16 @@ import com.flyingpig.cloudmusic.util.JwtUtil;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
     private AuthenticationManager authenticationManager;
+
     @Autowired
-    private RedisCache redisCache;
+    RedisCache redisCache;
+
     @Autowired
     private UserMapper userMapper;
     @Override
@@ -43,7 +46,7 @@ public class UserServiceImpl implements UserService {
         String userid = loginUser.getUser().getId().toString();
         String jwt = JwtUtil.createJWT(userid);
         //把完整的用户信息存入redis  userid作为key
-        redisCache.setCacheObject("login:"+userid,loginUser);
+//        redisCache.setCacheObject("login:"+userid,loginUser);
         Map<String,Object> map = new HashMap<>();
         map.put("token",jwt);
         QueryWrapper<User> userQueryWrapper=new QueryWrapper<>();
@@ -55,10 +58,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Result logout(Long userid) {
-        redisCache.deleteObject("login:"+userid);
+    public Result logout(String uuid) {
+        //将token加入黑名单
+        redisCache.setCacheObject("blacklist:"+uuid,"",30,TimeUnit.DAYS);
         return new Result(200,"退出成功",null);
-
     }
     @Override
     public void addUser(User user) {

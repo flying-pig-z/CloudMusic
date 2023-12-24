@@ -15,6 +15,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -26,11 +28,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()//对请求认证规则进行相应配置
                 //对于登录,修改密码和注册接口放行(antMatchers)
                 .antMatchers("/**").permitAll()
-//                .antMatchers("/users/login","/users/logout").permitAll()
-//                .antMatchers("/users/password").permitAll()
-//                .antMatchers("/email/verificationCode").permitAll()
-//                .antMatchers("/email/register").permitAll()
-//                .antMatchers("/v2/api-docs", "/definitions/**", "/configuration/ui", "/swagger-resources/**", "/configuration/security", "/swagger-ui.html", "/webjars/**","/swagger-resources/configuration/ui","/swagger-ui.html").permitAll()
                 .anyRequest().authenticated();
     }
     @Bean

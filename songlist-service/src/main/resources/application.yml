@@ -18,7 +18,7 @@ spring:
       server-addr: http://47.122.56.65:8848
       discovery:
         cluster-name: FJ # 集群名称
-        ip: 47.122.56.65 # 注册到nacos的ip与端口
+        ip: 47.96.42.73 # 注册到nacos的ip与端口
         port: 8081
 #ribbon配置
 songlistservice:
