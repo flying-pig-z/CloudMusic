@@ -5,12 +5,12 @@ import org.springframework.web.multipart.MultipartFile;
 public class MultipartFileUtil {
     public static boolean isMusicFile(MultipartFile file) {
         String fileName = file.getOriginalFilename();
-        String contentType = file.getContentType();
-
-        if (contentType != null && contentType.startsWith("audio/")) {
-            return true;
-        }
-
+        //并没有进行Mine类型检验
+//        String contentType = file.getContentType();
+//
+//        if (contentType != null && contentType.startsWith("audio/")) {
+//            return true;
+//        }
         String[] parts = fileName.split("\\.");
         if (parts.length > 0) {
             String extension = parts[parts.length - 1];
@@ -22,12 +22,13 @@ public class MultipartFileUtil {
         return false;
     }
     public static boolean isImageFile(MultipartFile file) {
-        String contentType = file.getContentType();
-
-        if (contentType != null && contentType.startsWith("image/")) {
-            return true;
-        }
-
-        return false;
+            String fileName = file.getOriginalFilename();
+            String[] parts = fileName.split("\\.");
+            if (parts.length > 0) {
+                String extension = parts[parts.length - 1];
+                return "jpg".equalsIgnoreCase(extension) || "jpeg".equalsIgnoreCase(extension)
+                        || "png".equalsIgnoreCase(extension) || "gif".equalsIgnoreCase(extension);
+            }
+            return false;
     }
 }

@@ -12,7 +12,7 @@ public class AliOSSUtils {
     private String endpoint = "";
     private String accessKeyId = "";
     private String accessKeySecret = "";
-    private String bucketName = "flying-pig-z";
+    private String bucketName = "";
 
     /**
      * 实现上传图片到OSS

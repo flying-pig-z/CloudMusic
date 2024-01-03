@@ -66,9 +66,10 @@ public class MusicController {
     public Result addMusic(@RequestHeader String Authorization,
                            @RequestParam String name, @RequestParam String introduce, @RequestParam String singerName,
                            @RequestParam MultipartFile coverFile ,@RequestParam MultipartFile musicFile)throws IOException {
-        if(!MultipartFileUtil.isMusicFile(musicFile)||!MultipartFileUtil.isImageFile(coverFile)){
-            return Result.error(500,"文件类型错误");
-        }
+//        if(!MultipartFileUtil.isMusicFile(musicFile)||!MultipartFileUtil.isImageFile(coverFile)){
+//            return Result.error(500,"文件类型错误");
+//        }
+        System.out.println(coverFile.getOriginalFilename());
         Music music=new Music(null,name,introduce,null,null,null,null,null,singerName);
         music.setLikeNum(Long.parseLong("0"));
         music.setCollectNum(Long.parseLong("0"));
