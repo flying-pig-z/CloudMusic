@@ -28,6 +28,10 @@ spring:
         cluster-name: FJ # 集群名称
         ip: 111.229.173.12 # 注册到nacos的ip与端口
         port: 9090
+    sentinel:
+      transport:
+        dashboard: localhost:8090
+        clientIp: localhost #注册到sentinel的ip
 #ribbon配置
 music-service:
   ribbon:
@@ -46,13 +50,10 @@ swagger:
   version: 1.0.0
 #feign远程调用配置
 feign:
-  client:
-    config:
-      default: # default全局的配置
-        loggerLevel: BASIC # 日志级别，BASIC就是基本的请求和响应信息
   httpclient:
     enabled: true # 开启feign对HttpClient的支持
     max-connections: 200 # 最大的连接数
     max-connections-per-route: 50 # 每个路径的最大连接数
-
+  sentinel:
+    enabled: true
 

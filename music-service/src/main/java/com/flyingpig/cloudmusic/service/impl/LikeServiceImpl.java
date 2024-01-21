@@ -39,4 +39,13 @@ public class LikeServiceImpl implements LikeService {
         likeLambdaQueryWrapper.eq(Like::getUserId,like.getUserId());
         likeMapper.delete(likeLambdaQueryWrapper);
     }
+
+    @Override
+    public boolean isLikeExist(Like like) {
+        LambdaQueryWrapper<Like> likeLambdaQueryWrapper=new LambdaQueryWrapper<>();
+        likeLambdaQueryWrapper.eq(Like::getMusicId,like.getMusicId());
+        likeLambdaQueryWrapper.eq(Like::getUserId,like.getUserId());
+        int count=likeMapper.selectCount(likeLambdaQueryWrapper);
+        return count>0;
+    }
 }

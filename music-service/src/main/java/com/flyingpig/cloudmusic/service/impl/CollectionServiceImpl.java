@@ -2,6 +2,7 @@ package com.flyingpig.cloudmusic.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.flyingpig.cloudmusic.dataobject.entity.Collection;
+import com.flyingpig.cloudmusic.dataobject.entity.Like;
 import com.flyingpig.cloudmusic.dataobject.entity.Music;
 import com.flyingpig.cloudmusic.mapper.CollectionMapper;
 import com.flyingpig.cloudmusic.mapper.MusicMapper;
@@ -36,6 +37,15 @@ public class CollectionServiceImpl implements CollectionService {
         Music music=musicMapper.selectById(collection.getMusicId());
         music.setCollectNum(music.getCollectNum()-1);
         musicMapper.updateById(music);
+    }
+
+    @Override
+    public boolean isCollectionExist(Collection collection) {
+        LambdaQueryWrapper<Collection> collectionLambdaQueryWrapper=new LambdaQueryWrapper<>();
+        collectionLambdaQueryWrapper.eq(Collection::getMusicId,collection.getMusicId());
+        collectionLambdaQueryWrapper.eq(Collection::getUserId,collection.getUserId());
+        int count=collectionMapper.selectCount(collectionLambdaQueryWrapper);
+        return count>0;
     }
 
 

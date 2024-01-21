@@ -1,4 +1,5 @@
-package com.flyingpig.cloudmusic.songlist.exception;
+package com.flyingpig.cloudmusic.exception;
+
 
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

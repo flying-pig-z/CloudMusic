@@ -8,4 +8,6 @@ public interface LikeService {
     void likeMusic(Like like);
 
     void deleteLike(Like like);
+
+    boolean isLikeExist(Like like);
 }

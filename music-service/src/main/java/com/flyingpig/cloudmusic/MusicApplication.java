@@ -1,5 +1,6 @@
 package com.flyingpig.cloudmusic;
 
+import com.flyingpig.feign.config.DefaultFeignConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
@@ -12,7 +13,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableScheduling
 @EnableSwagger2
 @EnableCaching
-@EnableFeignClients(basePackages = "com.flyingpig.feign.clients")
+@EnableFeignClients(basePackages = "com.flyingpig.feign.clients", defaultConfiguration = DefaultFeignConfiguration.class)
 @SpringBootApplication
 public class MusicApplication {
 

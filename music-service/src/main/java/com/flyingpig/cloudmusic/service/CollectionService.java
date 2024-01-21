@@ -9,4 +9,6 @@ public interface CollectionService {
     void collectMusic(Collection collection);
 
     void deleteCollection(Collection collection);
+
+    boolean isCollectionExist(Collection collection);
 }

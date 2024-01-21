@@ -1,7 +1,5 @@
 package com.flyingpig.cloudmusic.controller;
 
-
-import com.flyingpig.cloudmusic.dataobject.entity.User;
 import com.flyingpig.cloudmusic.result.Result;
 import com.flyingpig.cloudmusic.service.UserService;
 import com.flyingpig.cloudmusic.util.AliOSSUtils;

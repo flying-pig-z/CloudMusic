@@ -19,8 +19,10 @@ import java.time.LocalDateTime;
 @RequestMapping("/comments")
 @Api("评论相关的接口")
 public class CommentController {
+
     @Autowired
     private CommentService commentService;
+
     @GetMapping("")
     @ApiOperation("查看音乐的评论")
     public Result pageCommentsByMusicId(@RequestHeader String Authorization, @RequestParam Long musicId,
@@ -34,6 +36,9 @@ public class CommentController {
     @PostMapping("")
     @ApiOperation("发表评论")
     public Result addComment(@RequestHeader String Authorization, @RequestBody Comment addComment){
+        if(addComment.getContent().equals(null)){
+            return Result.error(500,"评论不能为空");
+        }
         Claims claims = JwtUtil.parseJwt(Authorization);
         Long userId = Long.parseLong(claims.getSubject());
         addComment.setUserId(userId);
@@ -41,4 +46,5 @@ public class CommentController {
         commentService.addComment(addComment);
         return Result.success();
     }
+
 }
