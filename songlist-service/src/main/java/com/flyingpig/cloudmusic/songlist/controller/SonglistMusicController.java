@@ -25,7 +25,7 @@ public class SonglistMusicController {
         return Result.success(songlistMusicService.listMusicNameBySonglistId(id));
     }
 
-    @ApiOperation("批量添加新的歌曲")
+    @ApiOperation("用户歌单批量添加新的歌曲")
     @PostMapping("")
     public Result addSonglistMusicList(@RequestHeader String Authorization, @RequestBody List<SonglistMusic> songlistMusicList){
         songlistMusicService.addSonglistMusicList(songlistMusicList);
