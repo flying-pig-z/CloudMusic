@@ -3,6 +3,7 @@ package com.flyingpig.cloudmusic.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.flyingpig.cloudmusic.dataobject.dto.CommentDTO;
 import com.flyingpig.cloudmusic.mapper.CommentMapper;
 import com.flyingpig.cloudmusic.common.PageBean;
@@ -22,7 +23,7 @@ import java.util.List;
 @Slf4j
 @Service
 @Transactional(rollbackFor = {Exception.class})
-public class CommentServiceImpl implements CommentService {
+public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> implements CommentService {
     @Autowired
     CommentMapper commentMapper;
     @Autowired

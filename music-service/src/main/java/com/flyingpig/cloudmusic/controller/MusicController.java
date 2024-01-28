@@ -10,6 +10,7 @@ import com.flyingpig.cloudmusic.service.MusicService;
 import com.flyingpig.cloudmusic.util.AliOSSUtils;
 import com.flyingpig.cloudmusic.util.JwtUtil;
 import com.flyingpig.cloudmusic.util.MultipartFileUtil;
+import com.flyingpig.cloudmusic.util.UserContext;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -40,8 +41,8 @@ public class MusicController {
 
     @GetMapping("/{musicId}")
     @ApiOperation("音乐界面查看返回该音乐的所有信息")
-    public Result selectMusicInfoById(@RequestHeader String Authorization, @PathVariable Long musicId){
-        Long userId = Long.parseLong(JwtUtil.parseJwt(Authorization).getSubject());
+    public Result selectMusicInfoById(@PathVariable Long musicId){
+        Long userId=UserContext.getUser();
         MusicInfo musicInfo=musicService.selectMusicInfoByUserIdAndMusicId(userId,musicId);
         return Result.success(musicInfo);
     }
@@ -68,8 +69,7 @@ public class MusicController {
 
     @PostMapping
     @ApiOperation("上传音乐")
-    public Result addMusic(@RequestHeader String Authorization,
-                           @RequestParam String name, @RequestParam String introduce, @RequestParam String singerName,
+    public Result addMusic(@RequestParam String name, @RequestParam String introduce, @RequestParam String singerName,
                            @RequestParam MultipartFile coverFile ,@RequestParam MultipartFile musicFile)throws IOException {
         if(!MultipartFileUtil.isMusicFile(musicFile)||!MultipartFileUtil.isImageFile(coverFile)){
             return Result.error(500,"文件类型错误");
@@ -78,7 +78,7 @@ public class MusicController {
         Music music=new Music(null,name,introduce,null,null,null,null,null,singerName);
         music.setLikeNum(Long.parseLong("0"));
         music.setCollectNum(Long.parseLong("0"));
-        music.setUploadUser(Long.parseLong(JwtUtil.parseJwt(Authorization).getSubject()));
+        music.setUploadUser(UserContext.getUser());
         // 将文件信息发送到RabbitMQ队列中
         rabbitTemplate.convertAndSend(musicQueue.getName(), new MusicUploadMessage(music, coverFile, musicFile));
         return Result.success();

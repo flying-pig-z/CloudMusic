@@ -4,6 +4,7 @@ package com.flyingpig.cloudmusic.songlist.controller;
 import com.flyingpig.cloudmusic.songlist.dataobject.dto.SonglistInfo;
 import com.flyingpig.cloudmusic.songlist.dataobject.entity.Songlist;
 import com.flyingpig.cloudmusic.songlist.service.SonglistService;
+import com.flyingpig.cloudmusic.util.UserContext;
 import io.jsonwebtoken.Claims;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -23,10 +24,9 @@ public class SonglistController {
 
     @ApiOperation("添加歌单")
     @PostMapping
-    public Result addSonglist(@RequestHeader String Authorization, @RequestParam String songlistName){
+    public Result addSonglist(@RequestParam String songlistName){
         try {
-            Claims claims = JwtUtil.parseJwt(Authorization);
-            Long userId = Long.parseLong(claims.getSubject());
+            Long userId= UserContext.getUser();
             Songlist songlist=new Songlist(null,songlistName, userId);
             songlistService.addSonglist(songlist);
             return Result.success();
@@ -39,16 +39,15 @@ public class SonglistController {
 
     @ApiOperation("删除歌单")
     @DeleteMapping("/{id}")
-    public Result deleteSonglistById(@RequestHeader String Authorization, @PathVariable Long id){
+    public Result deleteSonglistById(@PathVariable Long id){
         songlistService.deleteSonglistById(id);
         return Result.success();
     }
 
     @ApiOperation("返回用户所有歌单")
     @GetMapping
-    public Result listSonglistByUserId(@RequestHeader String Authorization){
-        Claims claims = JwtUtil.parseJwt(Authorization);
-        Long userId = Long.parseLong(claims.getSubject());
+    public Result listSonglistByUserId(){
+        Long userId=UserContext.getUser();
         List<SonglistInfo> songlistInfoList=songlistService.listSonglistByUserId(userId);
         return Result.success(songlistInfoList);
     }

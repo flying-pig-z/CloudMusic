@@ -12,40 +12,21 @@ spring:
       default-filters:
         - AddRequestHeader=origin,gateway
       routes: # 网关路由配置
-        - id: music-service-music
+        - id: music-service
           uri: lb://music-service # 路由的目标地址 lb就是负载均衡，后面跟服务名称
           predicates:
-            - Path=/musics/**
-        - id: music-service-comment
-          uri: lb://music-service # 路由的目标地址 lb就是负载均衡，后面跟服务名称
-          predicates:
-            - Path=/comments/**
-        - id: music-service-like
-          uri: lb://music-service # 路由的目标地址 lb就是负载均衡，后面跟服务名称
-          predicates:
-            - Path=/likes/**
-        - id: music-service-collection
-          uri: lb://music-service # 路由的目标地址 lb就是负载均衡，后面跟服务名称
-          predicates:
-            - Path=/collections/**
+            - Path=/musics/**,/comments/**,/likes/**,/collections/**
 
-        - id: songlist-service-songlist
+        - id: songlist-service
           uri: lb://songlist-service
           predicates: # 路由断言，也就是判断请求是否符合路由规则的条件
-            - Path=/songlists/**
-        - id: songlist-service-songlistmusic
-          uri: lb://songlist-service
-          predicates:
-            - Path=/songlist-musics/**
+            - Path=/songlists/**,/songlist-musics/**
 
-        - id: auth-service-user
+        - id: auth-service
           uri: lb://auth-service
-          predicates: # 路由断言，也就是判断请求是否符合路由规则的条件
-            - Path=/users/** # 路径匹配
-        - id: auth-service-email
-          uri: lb://auth-service
-          predicates: # 路由断言，也就是判断请求是否符合路由规则的条件
-            - Path=/email/** # 路径匹配
+          predicates:
+            - Path=/users/**,/email/**
+
       globalcors: # 全局的跨域处理
         add-to-simple-url-handler-mapping: true # 解决options请求被拦截问题
         corsConfigurations:

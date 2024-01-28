@@ -21,4 +21,5 @@ public class DefaultFeignConfiguration {
     public MusicClientFallbackFactory musicClientFallbackFactory(){
         return new MusicClientFallbackFactory();
     }
+
 }

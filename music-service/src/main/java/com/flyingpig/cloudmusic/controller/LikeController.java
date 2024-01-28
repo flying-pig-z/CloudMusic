@@ -5,6 +5,7 @@ import com.flyingpig.cloudmusic.dataobject.entity.Like;
 import com.flyingpig.cloudmusic.result.Result;
 import com.flyingpig.cloudmusic.service.LikeService;
 import com.flyingpig.cloudmusic.util.JwtUtil;
+import com.flyingpig.cloudmusic.util.UserContext;
 import io.jsonwebtoken.Claims;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,9 +27,8 @@ public class LikeController {
     @SentinelResource("like")
     @PostMapping("")
     @ApiOperation("点赞")
-    public Result likeMusic(@RequestHeader String Authorization, @RequestParam Long musicId) {
-        Claims claims = JwtUtil.parseJwt(Authorization);
-        Long userId = Long.parseLong(claims.getSubject());
+    public Result likeMusic(@RequestParam Long musicId) {
+        Long userId= UserContext.getUser();
         Like like = new Like();
         like.setMusicId(musicId);
         like.setUserId(userId);
@@ -43,9 +43,8 @@ public class LikeController {
 
     @DeleteMapping("")
     @ApiOperation("取消点赞")
-    public Result deleteLike(@RequestHeader String Authorization, @RequestParam Long musicId) {
-        Claims claims = JwtUtil.parseJwt(Authorization);
-        Long userId = Long.parseLong(claims.getSubject());
+    public Result deleteLike(@RequestParam Long musicId) {
+        Long userId=UserContext.getUser();
         Like like = new Like();
         like.setMusicId(musicId);
         like.setUserId(userId);

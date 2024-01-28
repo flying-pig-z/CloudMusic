@@ -5,6 +5,7 @@ import com.flyingpig.cloudmusic.dataobject.entity.Collection;
 import com.flyingpig.cloudmusic.result.Result;
 import com.flyingpig.cloudmusic.service.CollectionService;
 import com.flyingpig.cloudmusic.util.JwtUtil;
+import com.flyingpig.cloudmusic.util.UserContext;
 import io.jsonwebtoken.Claims;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,9 +26,8 @@ public class CollectionController {
     @SentinelResource("collection")
     @PostMapping("")
     @ApiOperation("收藏音乐")
-    public Result collectMusic(@RequestHeader String Authorization, @RequestParam @NotNull Long musicId){
-        Claims claims = JwtUtil.parseJwt(Authorization);
-        Long userId = Long.parseLong(claims.getSubject());
+    public Result collectMusic(@RequestParam @NotNull Long musicId){
+        Long userId= UserContext.getUser();
         Collection collection=new Collection();
         collection.setMusicId(musicId);
         collection.setUserId(userId);
@@ -43,9 +43,8 @@ public class CollectionController {
 
     @DeleteMapping("")
     @ApiOperation("取消收藏")
-    public Result deleteCollection(@RequestHeader String Authorization, @RequestParam @NotNull Long musicId){
-        Claims claims = JwtUtil.parseJwt(Authorization);
-        Long userId = Long.parseLong(claims.getSubject());
+    public Result deleteCollection(@RequestParam @NotNull Long musicId){
+        Long userId=UserContext.getUser();
         Collection collection=new Collection();
         collection.setMusicId(musicId);
         collection.setUserId(userId);

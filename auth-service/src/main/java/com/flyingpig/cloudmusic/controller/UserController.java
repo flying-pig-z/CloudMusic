@@ -4,6 +4,7 @@ import com.flyingpig.cloudmusic.result.Result;
 import com.flyingpig.cloudmusic.service.UserService;
 import com.flyingpig.cloudmusic.util.AliOSSUtils;
 import com.flyingpig.cloudmusic.util.JwtUtil;
+import com.flyingpig.cloudmusic.util.UserContext;
 import com.flyingpig.feign.dataobject.dto.UserInfo;
 import io.jsonwebtoken.Claims;
 import io.swagger.annotations.Api;
@@ -34,18 +35,16 @@ public class UserController {
 
     @GetMapping("/info")
     @ApiOperation("获取用户信息")
-    public Result selectUserInfoByUserId(@RequestHeader String Authorization){
+    public Result selectUserInfoByUserId(){
         //封装完毕后调用service层的add方法
-        Claims claims = JwtUtil.parseJwt(Authorization);
-        Long userId = Long.parseLong(claims.getSubject());
+        Long userId=UserContext.getUser();
         return Result.success(userService.selectUserInfoByUserId(userId));
     }
     @PutMapping("/avatar")
     @ApiOperation("修改用户头像")
-    public Result updateUserAvatar(@RequestHeader String Authorization, @RequestParam MultipartFile avatar) throws IOException {
+    public Result updateUserAvatar(@RequestParam MultipartFile avatar) throws IOException {
         //封装完毕后调用service层的add方法
-        Claims claims = JwtUtil.parseJwt(Authorization);
-        Long userId = Long.parseLong(claims.getSubject());
+        Long userId=UserContext.getUser();
         String avatarUrl = aliOSSUtils.upload(avatar);
         userService.updateAvatar(userId,avatarUrl);
         return Result.success();
@@ -53,9 +52,8 @@ public class UserController {
 
     @PutMapping("/username")
     @ApiOperation("修改用户名")
-    public Result updateUserName(@RequestHeader String Authorization,@RequestParam String userName){
-        Claims claims = JwtUtil.parseJwt(Authorization);
-        Long userId = Long.parseLong(claims.getSubject());
+    public Result updateUserName(@RequestParam String userName){
+        Long userId=UserContext.getUser();
         userService.updateUserName(userId,userName);
         return Result.success();
     }
