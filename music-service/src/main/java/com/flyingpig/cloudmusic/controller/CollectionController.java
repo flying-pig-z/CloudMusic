@@ -4,9 +4,7 @@ import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.flyingpig.cloudmusic.dataobject.entity.Collection;
 import com.flyingpig.cloudmusic.result.Result;
 import com.flyingpig.cloudmusic.service.CollectionService;
-import com.flyingpig.cloudmusic.util.JwtUtil;
 import com.flyingpig.cloudmusic.util.UserContext;
-import io.jsonwebtoken.Claims;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -27,10 +25,9 @@ public class CollectionController {
     @PostMapping("")
     @ApiOperation("收藏音乐")
     public Result collectMusic(@RequestParam @NotNull Long musicId){
-        Long userId= UserContext.getUser();
         Collection collection=new Collection();
         collection.setMusicId(musicId);
-        collection.setUserId(userId);
+        collection.setUserId(UserContext.getUserId());
         boolean isCollectionExist=collectionService.isCollectionExist(collection);
         if(isCollectionExist){
             return Result.error(500,"请误重复收藏");
@@ -44,10 +41,9 @@ public class CollectionController {
     @DeleteMapping("")
     @ApiOperation("取消收藏")
     public Result deleteCollection(@RequestParam @NotNull Long musicId){
-        Long userId=UserContext.getUser();
         Collection collection=new Collection();
         collection.setMusicId(musicId);
-        collection.setUserId(userId);
+        collection.setUserId(UserContext.getUserId());
         collectionService.deleteCollection(collection);
         return Result.success();
     }

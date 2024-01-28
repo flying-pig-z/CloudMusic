@@ -15,7 +15,7 @@ public class UserIdInterceptor implements HandlerInterceptor {
         // 2.判断是否为空
         if (StringUtil.isNotBlank(userId)) {
             // 不为空，保存到ThreadLocal
-            UserContext.setUser(Long.valueOf(userId));
+            UserContext.setUserId(Long.valueOf(userId));
         }
         // 3.放行
         return true;
@@ -24,6 +24,6 @@ public class UserIdInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         // 移除用户
-        UserContext.removeUser();
+        UserContext.removeUserId();
     }
 }

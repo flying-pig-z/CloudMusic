@@ -5,13 +5,11 @@ import com.flyingpig.cloudmusic.songlist.dataobject.dto.SonglistInfo;
 import com.flyingpig.cloudmusic.songlist.dataobject.entity.Songlist;
 import com.flyingpig.cloudmusic.songlist.service.SonglistService;
 import com.flyingpig.cloudmusic.util.UserContext;
-import io.jsonwebtoken.Claims;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.flyingpig.cloudmusic.result.Result;
-import com.flyingpig.cloudmusic.util.JwtUtil;
 
 import java.util.List;
 
@@ -26,8 +24,7 @@ public class SonglistController {
     @PostMapping
     public Result addSonglist(@RequestParam String songlistName){
         try {
-            Long userId= UserContext.getUser();
-            Songlist songlist=new Songlist(null,songlistName, userId);
+            Songlist songlist=new Songlist(null,songlistName, UserContext.getUserId());
             songlistService.addSonglist(songlist);
             return Result.success();
         } catch (Exception exception){
@@ -47,8 +44,7 @@ public class SonglistController {
     @ApiOperation("返回用户所有歌单")
     @GetMapping
     public Result listSonglistByUserId(){
-        Long userId=UserContext.getUser();
-        List<SonglistInfo> songlistInfoList=songlistService.listSonglistByUserId(userId);
+        List<SonglistInfo> songlistInfoList=songlistService.listSonglistByUserId(UserContext.getUserId());
         return Result.success(songlistInfoList);
     }
 

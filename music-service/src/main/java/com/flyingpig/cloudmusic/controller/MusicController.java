@@ -8,7 +8,6 @@ import com.flyingpig.cloudmusic.dataobject.message.MusicUploadMessage;
 import com.flyingpig.cloudmusic.result.Result;
 import com.flyingpig.cloudmusic.service.MusicService;
 import com.flyingpig.cloudmusic.util.AliOSSUtils;
-import com.flyingpig.cloudmusic.util.JwtUtil;
 import com.flyingpig.cloudmusic.util.MultipartFileUtil;
 import com.flyingpig.cloudmusic.util.UserContext;
 import io.swagger.annotations.Api;
@@ -42,8 +41,7 @@ public class MusicController {
     @GetMapping("/{musicId}")
     @ApiOperation("音乐界面查看返回该音乐的所有信息")
     public Result selectMusicInfoById(@PathVariable Long musicId){
-        Long userId=UserContext.getUser();
-        MusicInfo musicInfo=musicService.selectMusicInfoByUserIdAndMusicId(userId,musicId);
+        MusicInfo musicInfo=musicService.selectMusicInfoByUserIdAndMusicId(UserContext.getUserId(),musicId);
         return Result.success(musicInfo);
     }
 
@@ -78,7 +76,7 @@ public class MusicController {
         Music music=new Music(null,name,introduce,null,null,null,null,null,singerName);
         music.setLikeNum(Long.parseLong("0"));
         music.setCollectNum(Long.parseLong("0"));
-        music.setUploadUser(UserContext.getUser());
+        music.setUploadUser(UserContext.getUserId());
         // 将文件信息发送到RabbitMQ队列中
         rabbitTemplate.convertAndSend(musicQueue.getName(), new MusicUploadMessage(music, coverFile, musicFile));
         return Result.success();

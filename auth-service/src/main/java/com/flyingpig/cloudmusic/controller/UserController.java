@@ -3,10 +3,8 @@ package com.flyingpig.cloudmusic.controller;
 import com.flyingpig.cloudmusic.result.Result;
 import com.flyingpig.cloudmusic.service.UserService;
 import com.flyingpig.cloudmusic.util.AliOSSUtils;
-import com.flyingpig.cloudmusic.util.JwtUtil;
 import com.flyingpig.cloudmusic.util.UserContext;
 import com.flyingpig.feign.dataobject.dto.UserInfo;
-import io.jsonwebtoken.Claims;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,24 +35,21 @@ public class UserController {
     @ApiOperation("获取用户信息")
     public Result selectUserInfoByUserId(){
         //封装完毕后调用service层的add方法
-        Long userId=UserContext.getUser();
-        return Result.success(userService.selectUserInfoByUserId(userId));
+        return Result.success(userService.selectUserInfoByUserId(UserContext.getUserId()));
     }
     @PutMapping("/avatar")
     @ApiOperation("修改用户头像")
     public Result updateUserAvatar(@RequestParam MultipartFile avatar) throws IOException {
         //封装完毕后调用service层的add方法
-        Long userId=UserContext.getUser();
         String avatarUrl = aliOSSUtils.upload(avatar);
-        userService.updateAvatar(userId,avatarUrl);
+        userService.updateAvatar(UserContext.getUserId(),avatarUrl);
         return Result.success();
     }
 
     @PutMapping("/username")
     @ApiOperation("修改用户名")
     public Result updateUserName(@RequestParam String userName){
-        Long userId=UserContext.getUser();
-        userService.updateUserName(userId,userName);
+        userService.updateUserName(UserContext.getUserId(),userName);
         return Result.success();
     }
 
