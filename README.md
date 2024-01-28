@@ -24,10 +24,14 @@
 ### 安全方面
 
 实现了分布式鉴权，具体架构如下：
-![93WF)O6}J0{DCXF4C7 A1IC](https://raw.githubusercontent.com/flying-pig-z/picture-bed/main/img/202401031857716.png?token=A4A35OXHKKIF6BVQAKC37CDFSU66K)
+![image](https://github.com/flying-pig-z/CloudMusic/assets/117554874/b91c8159-75c8-465c-a681-b58eb4e3fbae)
 
 
 在登出方面，采用了token黑名单实现登出功能【相比白名单而言存储方面更加节省资源】，在每次服务请求网关的时候判断服务的token有无被用户登出加入黑名单。
+
+网关主要校验逻辑：白名单放行->检查token[是否为空or非法]->token是否在黑名单中已经登出->放行并将用户信息传递给各个微服务。
+
+在各个微服务中将网关传递的用户信息存入TreadLocal中。
 
 ### 业务功能方面
 
