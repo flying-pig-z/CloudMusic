@@ -13,7 +13,7 @@
 | 服务调用     | OpenFeign            |
 | 服务注册发现 | Nacos                |
 | 网关         | Spring Cloud Gateway |
-| 流量控制     | Sentinel             |
+| 微服务保护     | Sentinel             |
 
 ## 整体架构
 
