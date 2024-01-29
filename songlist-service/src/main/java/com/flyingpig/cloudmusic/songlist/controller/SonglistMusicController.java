@@ -25,14 +25,14 @@ public class SonglistMusicController {
         return Result.success(songlistMusicService.listMusicNameBySonglistId(id));
     }
 
-    @ApiOperation("用户歌单批量添加新的歌曲")
+    @ApiOperation("歌单批量添加新的歌曲")
     @PostMapping("")
     public Result addSonglistMusicList(@RequestBody List<SonglistMusic> songlistMusicList){
         songlistMusicService.addSonglistMusicList(songlistMusicList);
         return Result.success();
     }
 
-    @ApiOperation("批量删除歌曲")
+    @ApiOperation("歌单批量删除歌曲")
     @DeleteMapping("")
     public Result deleteSonglists(@RequestParam List<Long> songlistMusicIds){
         songlistMusicService.deleteSonglists(songlistMusicIds);
