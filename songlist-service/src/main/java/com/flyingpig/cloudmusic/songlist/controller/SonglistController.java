@@ -8,6 +8,7 @@ import com.flyingpig.cloudmusic.util.UserContext;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.*;
 import com.flyingpig.cloudmusic.result.Result;
 
@@ -27,11 +28,9 @@ public class SonglistController {
             Songlist songlist=new Songlist(null,songlistName, UserContext.getUserId());
             songlistService.addSonglist(songlist);
             return Result.success();
-        } catch (Exception exception){
+        } catch (DuplicateKeyException exception){
             return Result.error(500,"重复添加歌单");
         }
-
-
     }
 
     @ApiOperation("删除歌单")

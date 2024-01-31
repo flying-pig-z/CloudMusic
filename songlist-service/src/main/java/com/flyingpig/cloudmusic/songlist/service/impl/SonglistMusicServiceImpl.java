@@ -1,6 +1,7 @@
 package com.flyingpig.cloudmusic.songlist.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.flyingpig.cloudmusic.songlist.dataobject.dto.MusicDetailInSonglist;
 import com.flyingpig.cloudmusic.songlist.dataobject.entity.SonglistMusic;
 import com.flyingpig.cloudmusic.songlist.mapper.SonglistMusicMapper;
@@ -18,7 +19,7 @@ import java.util.List;
 @Slf4j
 @Service
 @Transactional(rollbackFor = {Exception.class})
-public class SonglistMusicServiceImpl implements SonglistMusicService {
+public class SonglistMusicServiceImpl extends ServiceImpl<SonglistMusicMapper,SonglistMusic> implements SonglistMusicService {
     @Autowired
     SonglistMusicMapper songlistMusicMapper;
     @Autowired

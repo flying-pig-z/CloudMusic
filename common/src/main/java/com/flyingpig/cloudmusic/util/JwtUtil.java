@@ -1,10 +1,7 @@
 package com.flyingpig.cloudmusic.util;
 
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -90,7 +87,7 @@ public class JwtUtil {
                 .setSubject(subject)   // 主题  可以是JSON数据
                 .setIssuer("flyingpig")     // 签发者
                 .setIssuedAt(now)      // 签发时间
-                .setExpiration(expDate)
+                .setExpiration(expDate)  //过期时间
                 .signWith(signatureAlgorithm, secretKey); //使用HS256对称加密算法签名, 第二个参数为秘钥
 
     }
