@@ -17,14 +17,15 @@ import java.util.Objects;
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserMapper userMapper;
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         //查询用户信息
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("email",email);
+        queryWrapper.eq("email", email);
         User user = userMapper.selectOne(queryWrapper);
         //如果没有查询到用户就抛出异常
-        if(Objects.isNull(user)){
+        if (Objects.isNull(user)) {
             throw new RuntimeException("用户名或者密码错误");
         }
         //TODO 根据用户查询权限信息，添加到LoginUser中

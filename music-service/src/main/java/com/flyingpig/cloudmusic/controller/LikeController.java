@@ -27,10 +27,10 @@ public class LikeController {
         Like like = new Like();
         like.setMusicId(musicId);
         like.setUserId(UserContext.getUserId());
-        boolean isLikeExist=likeService.isLikeExist(like);
-        if(isLikeExist){
-            return Result.error(500,"请误重复点赞");
-        } else  {
+        boolean isLikeExist = likeService.isLikeExist(like);
+        if (isLikeExist) {
+            return Result.error(500, "请误重复点赞");
+        } else {
             likeService.likeMusic(like);
             return Result.success();
         }

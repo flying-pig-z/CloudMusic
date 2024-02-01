@@ -20,32 +20,33 @@ public class CollectionServiceImpl implements CollectionService {
     CollectionMapper collectionMapper;
     @Autowired
     MusicMapper musicMapper;
+
     @Override
     public void collectMusic(Collection collection) {
-        Music music=musicMapper.selectById(collection.getMusicId());
-        music.setCollectNum(music.getCollectNum()+1);
+        Music music = musicMapper.selectById(collection.getMusicId());
+        music.setCollectNum(music.getCollectNum() + 1);
         musicMapper.updateById(music);
         collectionMapper.insert(collection);
     }
 
     @Override
     public void deleteCollection(Collection collection) {
-        LambdaQueryWrapper<Collection> collectionLambdaQueryWrapper=new LambdaQueryWrapper<>();
-        collectionLambdaQueryWrapper.eq(Collection::getMusicId,collection.getMusicId());
-        collectionLambdaQueryWrapper.eq(Collection::getUserId,collection.getUserId());
+        LambdaQueryWrapper<Collection> collectionLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        collectionLambdaQueryWrapper.eq(Collection::getMusicId, collection.getMusicId());
+        collectionLambdaQueryWrapper.eq(Collection::getUserId, collection.getUserId());
         collectionMapper.delete(collectionLambdaQueryWrapper);
-        Music music=musicMapper.selectById(collection.getMusicId());
-        music.setCollectNum(music.getCollectNum()-1);
+        Music music = musicMapper.selectById(collection.getMusicId());
+        music.setCollectNum(music.getCollectNum() - 1);
         musicMapper.updateById(music);
     }
 
     @Override
     public boolean isCollectionExist(Collection collection) {
-        LambdaQueryWrapper<Collection> collectionLambdaQueryWrapper=new LambdaQueryWrapper<>();
-        collectionLambdaQueryWrapper.eq(Collection::getMusicId,collection.getMusicId());
-        collectionLambdaQueryWrapper.eq(Collection::getUserId,collection.getUserId());
-        int count=collectionMapper.selectCount(collectionLambdaQueryWrapper);
-        return count>0;
+        LambdaQueryWrapper<Collection> collectionLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        collectionLambdaQueryWrapper.eq(Collection::getMusicId, collection.getMusicId());
+        collectionLambdaQueryWrapper.eq(Collection::getUserId, collection.getUserId());
+        int count = collectionMapper.selectCount(collectionLambdaQueryWrapper);
+        return count > 0;
     }
 
 

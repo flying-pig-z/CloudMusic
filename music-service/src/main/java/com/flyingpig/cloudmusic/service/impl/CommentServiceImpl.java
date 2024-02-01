@@ -30,25 +30,25 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     UserClients userClients;
 
     @Override
-    public PageBean pageCommentDTOByMusicId(Long musicId,Long pageNo,Long pageSize) {
-        IPage<Comment> commentIPage=new Page<>(pageNo,pageSize);
-        LambdaQueryWrapper<Comment> commentLambdaQueryWrapper=new LambdaQueryWrapper<>();
-        commentLambdaQueryWrapper.eq(Comment::getMusicId,musicId);
+    public PageBean pageCommentDTOByMusicId(Long musicId, Long pageNo, Long pageSize) {
+        IPage<Comment> commentIPage = new Page<>(pageNo, pageSize);
+        LambdaQueryWrapper<Comment> commentLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        commentLambdaQueryWrapper.eq(Comment::getMusicId, musicId);
         commentLambdaQueryWrapper.orderByDesc(Comment::getTime); // 按照时间字段降序排序
-        commentMapper.selectPage(commentIPage,commentLambdaQueryWrapper);
-        List<Comment> commentList=commentIPage.getRecords();
+        commentMapper.selectPage(commentIPage, commentLambdaQueryWrapper);
+        List<Comment> commentList = commentIPage.getRecords();
         //将实体类列表封装成dto列表
-        List<CommentDTO> resultList=new ArrayList<>();
-        for(Comment comment:commentList){
-            CommentDTO commentDTO=new CommentDTO();
+        List<CommentDTO> resultList = new ArrayList<>();
+        for (Comment comment : commentList) {
+            CommentDTO commentDTO = new CommentDTO();
             //封装评论信息
-            BeanUtils.copyProperties(comment,commentDTO);
+            BeanUtils.copyProperties(comment, commentDTO);
             //封装用户信息
-            UserInfo userInfo=userClients.selectUserInfoByUserId(comment.getUserId());
-            BeanUtils.copyProperties(userInfo,commentDTO);
+            UserInfo userInfo = userClients.selectUserInfoByUserId(comment.getUserId());
+            BeanUtils.copyProperties(userInfo, commentDTO);
             resultList.add(commentDTO);
         }
-        PageBean resultPage=new PageBean(commentIPage.getTotal(),resultList);
+        PageBean resultPage = new PageBean(commentIPage.getTotal(), resultList);
         return resultPage;
     }
 

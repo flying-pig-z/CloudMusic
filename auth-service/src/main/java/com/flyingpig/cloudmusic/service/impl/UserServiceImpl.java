@@ -7,7 +7,6 @@ import com.flyingpig.cloudmusic.mapper.UserMapper;
 import com.flyingpig.cloudmusic.result.Result;
 import com.flyingpig.cloudmusic.service.UserService;
 import com.flyingpig.cloudmusic.util.MyStringRedisTemplate;
-import com.flyingpig.cloudmusic.util.RedisCache;
 import com.flyingpig.feign.dataobject.dto.UserInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -24,17 +23,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import static com.flyingpig.cloudmusic.util.RedisConstants.USER_INFO_KEY;
-import static com.flyingpig.cloudmusic.util.RedisConstants.USER_INFO_TTL;
+import static com.flyingpig.cloudmusic.util.RedisConstants.*;
 
 @Service
 @Slf4j
 public class UserServiceImpl implements UserService {
     @Autowired
     private AuthenticationManager authenticationManager;
-
-    @Autowired
-    RedisCache redisCache;
 
     @Autowired
     MyStringRedisTemplate myStringRedisTemplate;
@@ -70,7 +65,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Result logout(String uuid) {
         //将token加入黑名单
-        redisCache.setCacheObject("blacklist:" + uuid, "", 30, TimeUnit.DAYS);
+        myStringRedisTemplate.set(USER_BLACKLIST_KEY + uuid, "", USER_BLACKLIST_TTL, TimeUnit.DAYS);
         return new Result(200, "退出成功", null);
     }
 
@@ -83,22 +78,22 @@ public class UserServiceImpl implements UserService {
     public UserInfo selectUserInfoByUserId(Long userId) {
         String key = USER_INFO_KEY + userId;
         //1.从redis查询用户信息缓存，并判断缓存是否存在
-        String userInfoJson= myStringRedisTemplate.get(key);
+        String userInfoJson = myStringRedisTemplate.get(key);
         if (userInfoJson != null && !userInfoJson.equals("")) {
             //缓存存在且不为空对象，直接返回
             return JSONUtil.toBean(userInfoJson, UserInfo.class);
-        }else if(userInfoJson != null){
+        } else if (userInfoJson != null) {
             //缓存为空对象，返回空对象给控制层
             return null;
         }
         //2.缓存不存在，根据id查询数据库
         //互斥锁防止缓存击穿
-        String lockKey="lock:user-info:"+userId;
+        String lockKey = "lock:user-info:" + userId;
 
-        try{
+        try {
             boolean isLock = myStringRedisTemplate.tryLock(lockKey);
             // 判断互斥锁否获取成功
-            if(!isLock){
+            if (!isLock) {
                 //互斥锁失败，则休眠重试
                 Thread.sleep(50);
                 return selectUserInfoByUserId(userId);
@@ -108,17 +103,17 @@ public class UserServiceImpl implements UserService {
             if (user == null) {
                 //数据库不存在，返回空对象，并将空对象写入缓存并返回
                 //将空对象写入缓存，防止缓存穿透
-                myStringRedisTemplate.set(key,"",USER_INFO_TTL,TimeUnit.DAYS);
+                myStringRedisTemplate.set(key, "", USER_INFO_TTL, TimeUnit.DAYS);
                 return null;
             } else {
                 //数据库存在则写入内存并返回
                 BeanUtils.copyProperties(user, result);
-                myStringRedisTemplate.set(key,JSONUtil.toJsonStr(result), USER_INFO_TTL, TimeUnit.DAYS);
+                myStringRedisTemplate.set(key, JSONUtil.toJsonStr(result), USER_INFO_TTL, TimeUnit.DAYS);
                 return result;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
-        }finally {
+        } finally {
             //释放互斥锁
             myStringRedisTemplate.unlock(lockKey);
         }

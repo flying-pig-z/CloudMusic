@@ -21,14 +21,15 @@ public class MultipartFileUtil {
 
         return false;
     }
+
     public static boolean isImageFile(MultipartFile file) {
-            String fileName = file.getOriginalFilename();
-            String[] parts = fileName.split("\\.");
-            if (parts.length > 0) {
-                String extension = parts[parts.length - 1];
-                return "jpg".equalsIgnoreCase(extension) || "jpeg".equalsIgnoreCase(extension)
-                        || "png".equalsIgnoreCase(extension) || "gif".equalsIgnoreCase(extension);
-            }
-            return false;
+        String fileName = file.getOriginalFilename();
+        String[] parts = fileName.split("\\.");
+        if (parts.length > 0) {
+            String extension = parts[parts.length - 1];
+            return "jpg".equalsIgnoreCase(extension) || "jpeg".equalsIgnoreCase(extension)
+                    || "png".equalsIgnoreCase(extension) || "gif".equalsIgnoreCase(extension);
+        }
+        return false;
     }
 }

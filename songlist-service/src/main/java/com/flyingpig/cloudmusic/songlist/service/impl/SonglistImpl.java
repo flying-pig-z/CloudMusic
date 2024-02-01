@@ -30,13 +30,13 @@ public class SonglistImpl implements SonglistService {
 
     @Override
     public List<SonglistInfo> listSonglistByUserId(Long userId) {
-        LambdaQueryWrapper<Songlist> songlistLambdaQueryWrapper=new LambdaQueryWrapper<>();
-        songlistLambdaQueryWrapper.eq(Songlist::getUserId,userId);
-        List<Songlist> songlistList=songlistMapper.selectList(songlistLambdaQueryWrapper);
-        List<SonglistInfo> songlistInfoList=new ArrayList<>();
-        for(Songlist songlist:songlistList){
-            SonglistInfo songlistInfo=new SonglistInfo();
-            BeanUtils.copyProperties(songlist,songlistInfo);
+        LambdaQueryWrapper<Songlist> songlistLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        songlistLambdaQueryWrapper.eq(Songlist::getUserId, userId);
+        List<Songlist> songlistList = songlistMapper.selectList(songlistLambdaQueryWrapper);
+        List<SonglistInfo> songlistInfoList = new ArrayList<>();
+        for (Songlist songlist : songlistList) {
+            SonglistInfo songlistInfo = new SonglistInfo();
+            BeanUtils.copyProperties(songlist, songlistInfo);
             songlistInfoList.add(songlistInfo);
         }
         return songlistInfoList;

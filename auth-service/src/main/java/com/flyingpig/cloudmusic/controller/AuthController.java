@@ -4,21 +4,27 @@ import com.flyingpig.cloudmusic.dataobject.entity.User;
 import com.flyingpig.cloudmusic.result.Result;
 import com.flyingpig.cloudmusic.service.UserService;
 import com.flyingpig.cloudmusic.util.JwtUtil;
-import com.flyingpig.cloudmusic.util.RedisCache;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.RedisConnectionFailureException;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
+
+import static com.flyingpig.cloudmusic.util.RedisConstants.USER_BLACKLIST_KEY;
 
 @RestController
 @RequestMapping("/users")
 @Api("用户操作相关的api")
+@Slf4j
 public class AuthController {
-    @Autowired
-    RedisCache redisCache;
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
 
     @PostMapping("/login")
     @ApiOperation("用户登录")
@@ -35,8 +41,13 @@ public class AuthController {
     }
 
     @GetMapping("/blacklist")
-    public boolean uuidIsInBlackListOrNot(@RequestParam String uuid){
-        return redisCache.getCacheObject("blacklist:" + uuid) != null;
+    public boolean uuidIsInBlackListOrNot(@RequestParam String uuid) {
+        try {
+            return stringRedisTemplate.opsForValue().get(USER_BLACKLIST_KEY + uuid) != null;
+        } catch (RedisConnectionFailureException e) {
+            log.error("redis崩溃啦啦啦啦啦");
+        }
+        return true;
     }
 
 

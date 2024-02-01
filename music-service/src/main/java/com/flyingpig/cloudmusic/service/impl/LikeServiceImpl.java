@@ -23,29 +23,29 @@ public class LikeServiceImpl implements LikeService {
 
     @Override
     public void likeMusic(Like addLike) {
-        Music music=musicMapper.selectById(addLike.getMusicId());
-        music.setLikeNum(music.getLikeNum()+1);
+        Music music = musicMapper.selectById(addLike.getMusicId());
+        music.setLikeNum(music.getLikeNum() + 1);
         musicMapper.updateById(music);
         likeMapper.insert(addLike);
     }
 
     @Override
     public void deleteLike(Like like) {
-        Music music=musicMapper.selectById(like.getMusicId());
-        music.setLikeNum(music.getLikeNum()-1);
+        Music music = musicMapper.selectById(like.getMusicId());
+        music.setLikeNum(music.getLikeNum() - 1);
         musicMapper.updateById(music);
-        LambdaQueryWrapper<Like> likeLambdaQueryWrapper=new LambdaQueryWrapper<>();
-        likeLambdaQueryWrapper.eq(Like::getMusicId,like.getMusicId());
-        likeLambdaQueryWrapper.eq(Like::getUserId,like.getUserId());
+        LambdaQueryWrapper<Like> likeLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        likeLambdaQueryWrapper.eq(Like::getMusicId, like.getMusicId());
+        likeLambdaQueryWrapper.eq(Like::getUserId, like.getUserId());
         likeMapper.delete(likeLambdaQueryWrapper);
     }
 
     @Override
     public boolean isLikeExist(Like like) {
-        LambdaQueryWrapper<Like> likeLambdaQueryWrapper=new LambdaQueryWrapper<>();
-        likeLambdaQueryWrapper.eq(Like::getMusicId,like.getMusicId());
-        likeLambdaQueryWrapper.eq(Like::getUserId,like.getUserId());
-        int count=likeMapper.selectCount(likeLambdaQueryWrapper);
-        return count>0;
+        LambdaQueryWrapper<Like> likeLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        likeLambdaQueryWrapper.eq(Like::getMusicId, like.getMusicId());
+        likeLambdaQueryWrapper.eq(Like::getUserId, like.getUserId());
+        int count = likeMapper.selectCount(likeLambdaQueryWrapper);
+        return count > 0;
     }
 }

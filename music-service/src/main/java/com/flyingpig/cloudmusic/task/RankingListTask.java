@@ -18,6 +18,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.flyingpig.cloudmusic.util.RedisConstants.MUSIC_RANKLIST_KEY;
+
 @Component
 @Slf4j
 public class RankingListTask {
@@ -28,6 +30,6 @@ public class RankingListTask {
     //每天0点和12点进行排行榜的更新
     @Scheduled(cron = "0 */5 * * * *")
     public void rankingListTask(){
-        redisTemplate.opsForValue().set("musicCache::musicRankList", musicMapper.selectRankList());
+        redisTemplate.opsForValue().set(MUSIC_RANKLIST_KEY, musicMapper.selectRankList());
     }
 }

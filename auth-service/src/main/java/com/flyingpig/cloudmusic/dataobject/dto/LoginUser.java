@@ -15,26 +15,31 @@ import java.util.Collection;
 @AllArgsConstructor
 public class LoginUser implements UserDetails {
     private User user;
+
     //获取用户权限
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
     }
+
     //判断用户名和密码是否没过期
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
+
     //返回用户名
     @Override
-    public String getUsername(){
+    public String getUsername() {
         return user.getEmail();
     }
+
     //返回密码
     @Override
-    public String getPassword(){
+    public String getPassword() {
         return user.getPassword();
     }
+
     @Override
     public boolean isAccountNonLocked() {
         return true;

@@ -25,6 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.flyingpig.cloudmusic.util.RedisConstants.MUSIC_RANKLIST_KEY;
+
 /**
  * @author flyingpig
  */
@@ -61,10 +63,10 @@ public class MusicServiceImpl implements MusicService {
         Collection collection = collectionMapper.selectOne(collectionLambdaQueryWrapper);
         if (collection == null) {
             result.setCollectOrNot(false);
-        }else {
+        } else {
             result.setCollectOrNot(true);
         }
-        UserInfo uploadUser=userClients.selectUserInfoByUserId(music.getUploadUser());
+        UserInfo uploadUser = userClients.selectUserInfoByUserId(music.getUploadUser());
         result.setUploadUserName(uploadUser.getUsername());
         return result;
     }
@@ -72,7 +74,7 @@ public class MusicServiceImpl implements MusicService {
     @Override
     public List<MusicInfoInRankList> selectRankList() {
         ValueOperations<String, List<MusicInfoInRankList>> operation = redisTemplate.opsForValue();
-        List<MusicInfoInRankList> result= operation.get("musicCache::musicRankList");
+        List<MusicInfoInRankList> result = operation.get(MUSIC_RANKLIST_KEY);
         return result;
     }
 
@@ -81,20 +83,20 @@ public class MusicServiceImpl implements MusicService {
         Music music = musicMapper.selectById(musicId);
         MusicDetail result = new MusicDetail();
         BeanUtils.copyProperties(music, result); // 将 music 对象属性值复制到 result 对象上
-        UserInfo uploadUser=userClients.selectUserInfoByUserId(music.getUploadUser());
+        UserInfo uploadUser = userClients.selectUserInfoByUserId(music.getUploadUser());
         result.setUploadUserName(uploadUser.getUsername());
         return result;
     }
 
     @Override
     public List<MusicIdAndName> searchMusic(String keyword) {
-        LambdaQueryWrapper<Music> musicLambdaQueryWrapper=new LambdaQueryWrapper<>();
-        musicLambdaQueryWrapper.like(Music::getName,keyword);
-        List<Music> musics=musicMapper.selectList(musicLambdaQueryWrapper);
-        List<MusicIdAndName> result=new ArrayList<>();
-        for(Music music:musics){
-            MusicIdAndName musicIdAndName=new MusicIdAndName();
-            BeanUtils.copyProperties(music,musicIdAndName);
+        LambdaQueryWrapper<Music> musicLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        musicLambdaQueryWrapper.like(Music::getName, keyword);
+        List<Music> musics = musicMapper.selectList(musicLambdaQueryWrapper);
+        List<MusicIdAndName> result = new ArrayList<>();
+        for (Music music : musics) {
+            MusicIdAndName musicIdAndName = new MusicIdAndName();
+            BeanUtils.copyProperties(music, musicIdAndName);
             result.add(musicIdAndName);
         }
         return result;

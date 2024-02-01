@@ -19,20 +19,21 @@ import java.util.List;
 @Slf4j
 @Service
 @Transactional(rollbackFor = {Exception.class})
-public class SonglistMusicServiceImpl extends ServiceImpl<SonglistMusicMapper,SonglistMusic> implements SonglistMusicService {
+public class SonglistMusicServiceImpl extends ServiceImpl<SonglistMusicMapper, SonglistMusic> implements SonglistMusicService {
     @Autowired
     SonglistMusicMapper songlistMusicMapper;
     @Autowired
     MusicClients musicClients;
+
     @Override
     public List<MusicDetailInSonglist> listMusicNameBySonglistId(Long id) {
-        LambdaQueryWrapper<SonglistMusic> songlistMusicLambdaQueryWrapper=new LambdaQueryWrapper<>();
-        songlistMusicLambdaQueryWrapper.eq(SonglistMusic::getSonglistId,id);
-        List<SonglistMusic> songlistMusics=songlistMusicMapper.selectList(songlistMusicLambdaQueryWrapper);
-        List<MusicDetailInSonglist> result=new ArrayList<>();
-        for(SonglistMusic songlistMusic:songlistMusics){
-            MusicDetail musicDetail=musicClients.selectMusicDetailById(songlistMusic.getMusicId());
-            MusicDetailInSonglist musicDetailInSonglist=new MusicDetailInSonglist(songlistMusic.getId(),musicDetail);
+        LambdaQueryWrapper<SonglistMusic> songlistMusicLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        songlistMusicLambdaQueryWrapper.eq(SonglistMusic::getSonglistId, id);
+        List<SonglistMusic> songlistMusics = songlistMusicMapper.selectList(songlistMusicLambdaQueryWrapper);
+        List<MusicDetailInSonglist> result = new ArrayList<>();
+        for (SonglistMusic songlistMusic : songlistMusics) {
+            MusicDetail musicDetail = musicClients.selectMusicDetailById(songlistMusic.getMusicId());
+            MusicDetailInSonglist musicDetailInSonglist = new MusicDetailInSonglist(songlistMusic.getId(), musicDetail);
             result.add(musicDetailInSonglist);
         }
         return result;
@@ -40,7 +41,7 @@ public class SonglistMusicServiceImpl extends ServiceImpl<SonglistMusicMapper,So
 
     @Override
     public void addSonglistMusicList(List<SonglistMusic> songlistMusicList) {
-        for(SonglistMusic songlistMusic:songlistMusicList){
+        for (SonglistMusic songlistMusic : songlistMusicList) {
             songlistMusicMapper.insert(songlistMusic);
         }
     }

@@ -24,32 +24,32 @@ public class UserController {
     private AliOSSUtils aliOSSUtils;
 
 
-
     @GetMapping("/user-info/{userId}")
-    UserInfo selectUserInfoByUserId(@PathVariable("userId") Long userId){
+    UserInfo selectUserInfoByUserId(@PathVariable("userId") Long userId) {
         return userService.selectUserInfoByUserId(userId);
     }
 
 
     @GetMapping("/info")
     @ApiOperation("获取用户信息")
-    public Result selectUserInfoByUserId(){
+    public Result selectUserInfoByUserId() {
         //封装完毕后调用service层的add方法
         return Result.success(userService.selectUserInfoByUserId(UserContext.getUserId()));
     }
+
     @PutMapping("/avatar")
     @ApiOperation("修改用户头像")
     public Result updateUserAvatar(@RequestParam MultipartFile avatar) throws IOException {
         //封装完毕后调用service层的add方法
         String avatarUrl = aliOSSUtils.upload(avatar);
-        userService.updateAvatar(UserContext.getUserId(),avatarUrl);
+        userService.updateAvatar(UserContext.getUserId(), avatarUrl);
         return Result.success();
     }
 
     @PutMapping("/username")
     @ApiOperation("修改用户名")
-    public Result updateUserName(@RequestParam String userName){
-        userService.updateUserName(UserContext.getUserId(),userName);
+    public Result updateUserName(@RequestParam String userName) {
+        userService.updateUserName(UserContext.getUserId(), userName);
         return Result.success();
     }
 

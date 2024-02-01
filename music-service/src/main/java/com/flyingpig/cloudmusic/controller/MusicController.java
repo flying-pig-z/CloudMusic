@@ -40,40 +40,40 @@ public class MusicController {
 
     @GetMapping("/{musicId}")
     @ApiOperation("音乐界面查看返回该音乐的所有信息")
-    public Result selectMusicInfoById(@PathVariable Long musicId){
-        MusicInfo musicInfo=musicService.selectMusicInfoByUserIdAndMusicId(UserContext.getUserId(),musicId);
+    public Result selectMusicInfoById(@PathVariable Long musicId) {
+        MusicInfo musicInfo = musicService.selectMusicInfoByUserIdAndMusicId(UserContext.getUserId(), musicId);
         return Result.success(musicInfo);
     }
 
     @SentinelResource("rank-list")
     @GetMapping("/rank-list")
     @ApiOperation("返回排行榜的音乐及这些音乐的相关信息")
-    public Result selectRankList(){
-        List<MusicInfoInRankList> result= musicService.selectRankList();
+    public Result selectRankList() {
+        List<MusicInfoInRankList> result = musicService.selectRankList();
         return Result.success(result);
     }
 
     @GetMapping("/{musicId}/detail")
-    public MusicDetail selectMusicDetailById(@PathVariable Long musicId){
+    public MusicDetail selectMusicDetailById(@PathVariable Long musicId) {
         return musicService.selectMusicDetailByMusicId(musicId);
     }
 
     @GetMapping("/search")
     @ApiOperation("根据关键词搜索音乐")
-    public Result searchMusic(@RequestParam String keyword){
-        List<MusicIdAndName> result= musicService.searchMusic(keyword);
+    public Result searchMusic(@RequestParam String keyword) {
+        List<MusicIdAndName> result = musicService.searchMusic(keyword);
         return Result.success(result);
     }
 
     @PostMapping
     @ApiOperation("上传音乐")
     public Result addMusic(@RequestParam String name, @RequestParam String introduce, @RequestParam String singerName,
-                           @RequestParam MultipartFile coverFile ,@RequestParam MultipartFile musicFile)throws IOException {
-        if(!MultipartFileUtil.isMusicFile(musicFile)||!MultipartFileUtil.isImageFile(coverFile)){
-            return Result.error(500,"文件类型错误");
+                           @RequestParam MultipartFile coverFile, @RequestParam MultipartFile musicFile) throws IOException {
+        if (!MultipartFileUtil.isMusicFile(musicFile) || !MultipartFileUtil.isImageFile(coverFile)) {
+            return Result.error(500, "文件类型错误");
         }
         System.out.println(coverFile.getOriginalFilename());
-        Music music=new Music(null,name,introduce,null,null,null,null,null,singerName);
+        Music music = new Music(null, name, introduce, null, null, null, null, null, singerName);
         music.setLikeNum(Long.parseLong("0"));
         music.setCollectNum(Long.parseLong("0"));
         music.setUploadUser(UserContext.getUserId());
@@ -81,9 +81,6 @@ public class MusicController {
         rabbitTemplate.convertAndSend(musicQueue.getName(), new MusicUploadMessage(music, coverFile, musicFile));
         return Result.success();
     }
-
-
-
 
 
 }

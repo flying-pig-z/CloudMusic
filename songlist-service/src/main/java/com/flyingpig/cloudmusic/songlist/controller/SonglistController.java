@@ -23,27 +23,27 @@ public class SonglistController {
 
     @ApiOperation("添加歌单")
     @PostMapping
-    public Result addSonglist(@RequestParam String songlistName){
+    public Result addSonglist(@RequestParam String songlistName) {
         try {
-            Songlist songlist=new Songlist(null,songlistName, UserContext.getUserId());
+            Songlist songlist = new Songlist(null, songlistName, UserContext.getUserId());
             songlistService.addSonglist(songlist);
             return Result.success();
-        } catch (DuplicateKeyException exception){
-            return Result.error(500,"重复添加歌单");
+        } catch (DuplicateKeyException exception) {
+            return Result.error(500, "重复添加歌单");
         }
     }
 
     @ApiOperation("删除歌单")
     @DeleteMapping("/{id}")
-    public Result deleteSonglistById(@PathVariable Long id){
+    public Result deleteSonglistById(@PathVariable Long id) {
         songlistService.deleteSonglistById(id);
         return Result.success();
     }
 
     @ApiOperation("返回用户所有歌单")
     @GetMapping
-    public Result listSonglistByUserId(){
-        List<SonglistInfo> songlistInfoList=songlistService.listSonglistByUserId(UserContext.getUserId());
+    public Result listSonglistByUserId() {
+        List<SonglistInfo> songlistInfoList = songlistService.listSonglistByUserId(UserContext.getUserId());
         return Result.success(songlistInfoList);
     }
 

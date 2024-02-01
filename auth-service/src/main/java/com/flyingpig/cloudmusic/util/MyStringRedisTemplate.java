@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class MyStringRedisTemplate {
     private final StringRedisTemplate stringRedisTemplate;
+
     public MyStringRedisTemplate(StringRedisTemplate stringRedisTemplate) {
         this.stringRedisTemplate = stringRedisTemplate;
     }
@@ -21,7 +22,7 @@ public class MyStringRedisTemplate {
     public Boolean delete(String key) {
         try {
             return stringRedisTemplate.delete(key);
-        }catch (RedisConnectionFailureException e){
+        } catch (RedisConnectionFailureException e) {
             log.error("redis崩溃啦啦啦啦啦");
         }
         return false;
@@ -29,17 +30,17 @@ public class MyStringRedisTemplate {
 
 
     public void set(String key, String jsonStr, Long ttl, TimeUnit timeUnit) {
-        try{
-            stringRedisTemplate.opsForValue().set(key, jsonStr ,ttl, timeUnit);
-        }catch (RedisConnectionFailureException e){
+        try {
+            stringRedisTemplate.opsForValue().set(key, jsonStr, ttl, timeUnit);
+        } catch (RedisConnectionFailureException e) {
             log.error("redis崩溃啦啦啦啦啦");
         }
     }
 
     public String get(String key) {
-        try{
+        try {
             return stringRedisTemplate.opsForValue().get(key);
-        }catch (RedisConnectionFailureException e){
+        } catch (RedisConnectionFailureException e) {
             log.error("redis崩溃啦啦啦啦啦");
         }
         return null;
@@ -49,16 +50,18 @@ public class MyStringRedisTemplate {
     public boolean tryLock(String key) {
         Boolean flag = true;
         try {
-            flag=stringRedisTemplate.opsForValue().setIfAbsent(key, "1", 10, TimeUnit.SECONDS);
-        }catch (RedisConnectionFailureException e){
+            flag = stringRedisTemplate.opsForValue().setIfAbsent(key, "1", 10, TimeUnit.SECONDS);
+        } catch (RedisConnectionFailureException e) {
             log.error("redis崩溃啦啦啦啦啦");
         }
         return BooleanUtil.isTrue(flag);
     }
 
     public void unlock(String key) {
-        try {stringRedisTemplate.delete(key);stringRedisTemplate.opsForValue().setIfAbsent(key, "1", 10, TimeUnit.SECONDS);
-        }catch (RedisConnectionFailureException e){
+        try {
+            stringRedisTemplate.delete(key);
+            stringRedisTemplate.opsForValue().setIfAbsent(key, "1", 10, TimeUnit.SECONDS);
+        } catch (RedisConnectionFailureException e) {
             log.error("redis崩溃啦啦啦啦啦");
         }
 
