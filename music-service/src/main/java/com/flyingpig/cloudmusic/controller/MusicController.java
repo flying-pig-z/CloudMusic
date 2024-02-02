@@ -13,6 +13,7 @@ import com.flyingpig.cloudmusic.util.UserContext;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,8 @@ import org.springframework.amqp.core.Queue;
 
 import java.io.IOException;
 import java.util.List;
+
+import static com.flyingpig.cloudmusic.util.RabbitMQConstants.MUSIC_UPLOAD_EXCHANGE_NAME;
 
 
 @Slf4j
@@ -35,8 +38,6 @@ public class MusicController {
     @Autowired
     RabbitTemplate rabbitTemplate;
 
-    @Autowired
-    Queue musicQueue;
 
     @GetMapping("/{musicId}")
     @ApiOperation("音乐界面查看返回该音乐的所有信息")
@@ -78,7 +79,7 @@ public class MusicController {
         music.setCollectNum(Long.parseLong("0"));
         music.setUploadUser(UserContext.getUserId());
         // 将文件信息发送到RabbitMQ队列中
-        rabbitTemplate.convertAndSend(musicQueue.getName(), new MusicUploadMessage(music, coverFile, musicFile));
+        rabbitTemplate.convertAndSend(MUSIC_UPLOAD_EXCHANGE_NAME,"", new MusicUploadMessage());
         return Result.success();
     }
 

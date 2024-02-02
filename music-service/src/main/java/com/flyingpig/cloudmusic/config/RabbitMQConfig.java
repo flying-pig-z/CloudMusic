@@ -1,5 +1,8 @@
 package com.flyingpig.cloudmusic.config;
 
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -31,11 +34,4 @@ public class RabbitMQConfig {
         return template;
     }
 
-    // 配置RabbitMQ连接信息
-    private final String QUEUE_NAME = "music_queue";
-
-    @Bean
-    public Queue musicQueue() {
-        return new Queue(QUEUE_NAME);
-    }
 }

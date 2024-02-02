@@ -11,16 +11,37 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+import static com.flyingpig.cloudmusic.util.RabbitMQConstants.MUSIC_UPLOAD_QUEUE_NAME1;
+import static com.flyingpig.cloudmusic.util.RabbitMQConstants.MUSIC_UPLOAD_QUEUE_NAME2;
+
 @Component
 @Slf4j
-public class MusicUploadMessageHandler {
+public class MusicUploadListener {
 
     @Autowired
     private MusicService musicService;
     @Autowired
     AliOSSUtils aliOSSUtils;
-    @RabbitListener(queues = "music_queue")
-    public void handleMusicUploadRequest(MusicUploadMessage request) throws IOException {
+
+    @RabbitListener(queues = MUSIC_UPLOAD_QUEUE_NAME1)
+    public void handleMusicUploadRequest1(MusicUploadMessage request) throws IOException {
+        //处理文件上传请求
+        try {
+            String coverPath = aliOSSUtils.upload(request.getCoverFile());
+            String musicPath = aliOSSUtils.upload(request.getMusicFile());
+            request.getMusic().setCoverPath(coverPath);
+            request.getMusic().setMusicPath(musicPath);
+            musicService.addMusic(request.getMusic());
+        } catch (Exception e) {
+            // 异常处理
+            log.error("处理音乐上传请求失败");
+            throw new AmqpRejectAndDontRequeueException("处理音乐上传请求失败，将消息丢弃");
+        }
+    }
+
+    @RabbitListener(queues = MUSIC_UPLOAD_QUEUE_NAME2)
+    public void handleMusicUploadRequest2(MusicUploadMessage request) throws IOException {
+
         // 处理文件上传请求
         try {
             String coverPath = aliOSSUtils.upload(request.getCoverFile());
