@@ -13,12 +13,10 @@ import com.flyingpig.cloudmusic.util.UserContext;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.amqp.core.Queue;
 
 import java.io.IOException;
 import java.util.List;
@@ -37,6 +35,8 @@ public class MusicController {
     AliOSSUtils aliOSSUtils;
     @Autowired
     RabbitTemplate rabbitTemplate;
+
+
 
 
     @GetMapping("/{musicId}")
@@ -83,5 +83,17 @@ public class MusicController {
         return Result.success();
     }
 
+    @DeleteMapping("")
+    @ApiOperation("删除自己上传的音乐")
+    public Result deleteMusic(@RequestParam Long musicId){
+        musicService.deleteMusicByIdAndUserId(musicId,UserContext.getUserId());
+        return Result.success();
+    }
+
+    @GetMapping("/upload-music")
+    public Result selectUploadMusics(){
+        List<UploadMusicInfo> result= musicService.selectUploadMusics();
+        return Result.success(result);
+    }
 
 }

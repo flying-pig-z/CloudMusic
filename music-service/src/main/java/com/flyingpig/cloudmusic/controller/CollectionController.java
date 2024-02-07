@@ -23,29 +23,17 @@ public class CollectionController {
 
     @SentinelResource("collection")
     @PostMapping("")
-    @ApiOperation("收藏音乐")
+    @ApiOperation("收藏音乐和取消收藏")
     public Result collectMusic(@RequestParam @NotNull Long musicId) {
         Collection collection = new Collection();
         collection.setMusicId(musicId);
         collection.setUserId(UserContext.getUserId());
         boolean isCollectionExist = collectionService.isCollectionExist(collection);
         if (isCollectionExist) {
-            return Result.error(500, "请误重复收藏");
+            collectionService.deleteCollection(collection);
         } else {
             collectionService.collectMusic(collection);
-            return Result.success();
         }
-
-    }
-
-    @DeleteMapping("")
-    @ApiOperation("取消收藏")
-    public Result deleteCollection(@RequestParam @NotNull Long musicId) {
-        Collection collection = new Collection();
-        collection.setMusicId(musicId);
-        collection.setUserId(UserContext.getUserId());
-        collectionService.deleteCollection(collection);
         return Result.success();
     }
-
 }

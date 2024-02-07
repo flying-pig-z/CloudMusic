@@ -1,9 +1,6 @@
 package com.flyingpig.cloudmusic.service;
 
-import com.flyingpig.cloudmusic.dataobject.dto.MusicDetail;
-import com.flyingpig.cloudmusic.dataobject.dto.MusicIdAndName;
-import com.flyingpig.cloudmusic.dataobject.dto.MusicInfo;
-import com.flyingpig.cloudmusic.dataobject.dto.MusicInfoInRankList;
+import com.flyingpig.cloudmusic.dataobject.dto.*;
 import com.flyingpig.cloudmusic.dataobject.entity.Music;
 import org.springframework.stereotype.Service;
 
@@ -24,4 +21,8 @@ public interface MusicService {
     List<MusicIdAndName> searchMusic(String keyword);
 
     void addMusic(Music music);
+
+    void deleteMusicByIdAndUserId(Long musicId, Long userId);
+
+    List<UploadMusicInfo> selectUploadMusics();
 }

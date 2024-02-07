@@ -1,0 +1,13 @@
+com\flyingpig\cloudmusic\interceptor\UserIdInterceptor.class
+com\flyingpig\cloudmusic\util\JwtUtil.class
+com\flyingpig\cloudmusic\sentinel\HeaderOriginParser.class
+com\flyingpig\cloudmusic\util\MyStringRedisTemplate.class
+com\flyingpig\cloudmusic\util\AliOSSUtils.class
+com\flyingpig\cloudmusic\sentinel\exception\SentinelExceptionHandler.class
+com\flyingpig\cloudmusic\util\UserContext.class
+com\flyingpig\cloudmusic\exception\GlobalExceptionHandler.class
+com\flyingpig\cloudmusic\sentinel\exception\BlockExceptionHandler.class
+com\flyingpig\cloudmusic\config\MvcConfig.class
+com\flyingpig\cloudmusic\util\RedisConstants.class
+com\flyingpig\cloudmusic\result\Result.class
+com\flyingpig\cloudmusic\util\RabbitMQConstants.class

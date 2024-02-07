@@ -9,10 +9,10 @@ import java.io.InputStream;
 import java.util.UUID;
 @Component
 public class AliOSSUtils {
-    private String endpoint = "https://oss-cn-beijing.aliyuncs.com";
-    private String accessKeyId = "LTAI5tKXU1qUbrW2RQxCBipn";
-    private String accessKeySecret = "Qun75h5fixpHqjnApwRHjYU6eK6uqW";
-    private String bucketName = "flying-pig-z";
+    private String endpoint = "";
+    private String accessKeyId = "";
+    private String accessKeySecret = "";
+    private String bucketName = "";
 
     /**
      * 实现上传图片到OSS

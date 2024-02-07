@@ -1,17 +1,15 @@
 package com.flyingpig.cloudmusic.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.flyingpig.cloudmusic.dataobject.dto.MusicDetail;
-import com.flyingpig.cloudmusic.dataobject.dto.MusicIdAndName;
-import com.flyingpig.cloudmusic.dataobject.dto.MusicInfoInRankList;
+import com.flyingpig.cloudmusic.dataobject.dto.*;
 import com.flyingpig.cloudmusic.dataobject.entity.Collection;
-import com.flyingpig.cloudmusic.dataobject.entity.Like;
 import com.flyingpig.cloudmusic.dataobject.entity.Music;
-import com.flyingpig.cloudmusic.dataobject.dto.MusicInfo;
 import com.flyingpig.cloudmusic.mapper.CollectionMapper;
 import com.flyingpig.cloudmusic.mapper.LikeMapper;
 import com.flyingpig.cloudmusic.mapper.MusicMapper;
 import com.flyingpig.cloudmusic.service.MusicService;
+import com.flyingpig.cloudmusic.cache.LikeCache;
+import com.flyingpig.cloudmusic.util.UserContext;
 import com.flyingpig.feign.clients.UserClients;
 import com.flyingpig.feign.dataobject.dto.UserInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -37,35 +35,26 @@ public class MusicServiceImpl implements MusicService {
     @Autowired
     private MusicMapper musicMapper;
     @Autowired
-    private LikeMapper likeMapper;
-    @Autowired
     private CollectionMapper collectionMapper;
     @Autowired
     private UserClients userClients;
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    LikeCache likeCache;
+
+
     @Override
     public MusicInfo selectMusicInfoByUserIdAndMusicId(Long userId, Long musicId) {
         Music music = musicMapper.selectById(musicId);
         MusicInfo result = new MusicInfo();
         BeanUtils.copyProperties(music, result); // 将 music 对象属性值复制到 result 对象上
-        LambdaQueryWrapper<Like> likeLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        likeLambdaQueryWrapper.eq(Like::getUserId, userId).eq(Like::getMusicId, musicId);
-        Like like = likeMapper.selectOne(likeLambdaQueryWrapper);
-        if (like == null) {
-            result.setLikeOrNot(false);
-        } else {
-            result.setLikeOrNot(true);
-        }
+        result.setLikeOrNot(likeCache.judgeLikeOrNotByMusicIdAndUserId(musicId,userId));
         LambdaQueryWrapper<Collection> collectionLambdaQueryWrapper = new LambdaQueryWrapper<>();
         collectionLambdaQueryWrapper.eq(Collection::getUserId, userId).eq(Collection::getMusicId, musicId);
         Collection collection = collectionMapper.selectOne(collectionLambdaQueryWrapper);
-        if (collection == null) {
-            result.setCollectOrNot(false);
-        } else {
-            result.setCollectOrNot(true);
-        }
+        result.setCollectOrNot(collection != null);
         UserInfo uploadUser = userClients.selectUserInfoByUserId(music.getUploadUser());
         result.setUploadUserName(uploadUser.getUsername());
         return result;
@@ -107,5 +96,25 @@ public class MusicServiceImpl implements MusicService {
         musicMapper.insert(music);
     }
 
+    @Override
+    public void deleteMusicByIdAndUserId(Long musicId,Long userId) {
+        if(musicMapper.selectById(musicId).getUploadUser().equals(userId)) {
+            musicMapper.deleteById(musicId);
+        }
+    }
+
+    @Override
+    public List<UploadMusicInfo> selectUploadMusics() {
+        LambdaQueryWrapper<Music> musicLambdaQueryWrapper=new LambdaQueryWrapper<>();
+        musicLambdaQueryWrapper.eq(Music::getUploadUser,UserContext.getUserId());
+        List<Music>  musicList=musicMapper.selectList(musicLambdaQueryWrapper);
+        List<UploadMusicInfo> uploadMusicInfos=new ArrayList<>();
+        for(Music music:musicList){
+            UploadMusicInfo uploadMusicInfo=new UploadMusicInfo();
+            BeanUtils.copyProperties(music,uploadMusicInfo);
+            uploadMusicInfos.add(uploadMusicInfo);
+        }
+        return uploadMusicInfos;
+    }
 
 }

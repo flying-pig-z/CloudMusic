@@ -16,5 +16,13 @@ public class RedisConstants {
 
     public static final String MUSIC_RANKLIST_KEY="music:rankList:";
 
+    public static final String MUSIC_LIKE_KEY="music:like:";
+
+    public static final Long MUSIC_LIKE_TTL=30L;
+
+    public static final String MUSIC_LIKENUM_KEY="music:like-num:";
+
+    public static final Long MUSIC_LIKENUM_TTL=30L;
+
 
 }

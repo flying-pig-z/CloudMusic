@@ -1,9 +1,5 @@
 package com.flyingpig.cloudmusic.config;
 
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.FanoutExchange;
-import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
@@ -33,5 +29,7 @@ public class RabbitMQConfig {
         RabbitTemplate template = new RabbitTemplate(connectionFactory());
         return template;
     }
+
+
 
 }

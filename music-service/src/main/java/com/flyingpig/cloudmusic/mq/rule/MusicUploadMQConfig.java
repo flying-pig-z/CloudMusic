@@ -1,4 +1,4 @@
-package com.flyingpig.cloudmusic.config;
+package com.flyingpig.cloudmusic.mq.rule;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -15,7 +15,7 @@ public class MusicUploadMQConfig {
 
 
     @Bean
-    public FanoutExchange musicUploadExchange(){
+    public FanoutExchange musicUploadFanoutExchange(){
         return new FanoutExchange(MUSIC_UPLOAD_EXCHANGE_NAME);
     }
 
@@ -23,7 +23,7 @@ public class MusicUploadMQConfig {
 
 
     @Bean
-    public Queue musicUploadQueue1() {
+    public Queue musicUploadFanoutQueue1() {
         return new Queue(MUSIC_UPLOAD_QUEUE_NAME1);
     }
 
@@ -31,15 +31,15 @@ public class MusicUploadMQConfig {
      * 绑定队列1和交换机
      */
     @Bean
-    public Binding bindingQueue1(Queue musicUploadQueue1, FanoutExchange musicUploadExchange){
-        return BindingBuilder.bind(musicUploadQueue1).to(musicUploadExchange);
+    public Binding bindingQueue1(Queue musicUploadFanoutQueue1, FanoutExchange musicUploadFanoutExchange){
+        return BindingBuilder.bind(musicUploadFanoutQueue1).to(musicUploadFanoutExchange);
     }
 
     //队列2
 
 
     @Bean
-    public Queue musicUploadQueue2() {
+    public Queue musicUploadFanoutQueue2() {
         return new Queue(MUSIC_UPLOAD_QUEUE_NAME2);
     }
 
@@ -47,8 +47,8 @@ public class MusicUploadMQConfig {
      * 绑定队列2和交换机
      */
     @Bean
-    public Binding bindingQueue2(Queue musicUploadQueue2, FanoutExchange musicUploadExchange){
-        return BindingBuilder.bind(musicUploadQueue2).to(musicUploadExchange);
+    public Binding bindingQueue2(Queue musicUploadFanoutQueue2, FanoutExchange musicUploadFanoutExchange){
+        return BindingBuilder.bind(musicUploadFanoutQueue2).to(musicUploadFanoutExchange);
     }
 
 }

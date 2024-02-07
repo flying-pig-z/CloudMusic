@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+
 @Slf4j
 @RestController
 @RequestMapping("/likes")
@@ -22,27 +23,15 @@ public class LikeController {
 
     @SentinelResource("like")
     @PostMapping("")
-    @ApiOperation("点赞")
+    @ApiOperation("点赞或取消点赞")
     public Result likeMusic(@RequestParam Long musicId) {
         Like like = new Like();
         like.setMusicId(musicId);
         like.setUserId(UserContext.getUserId());
-        boolean isLikeExist = likeService.isLikeExist(like);
-        if (isLikeExist) {
-            return Result.error(500, "请误重复点赞");
-        } else {
-            likeService.likeMusic(like);
-            return Result.success();
+        boolean judge = likeService.likeMusic(like);
+        if(!judge){
+            return Result.error(500,"音乐不存在");
         }
-    }
-
-    @DeleteMapping("")
-    @ApiOperation("取消点赞")
-    public Result deleteLike(@RequestParam Long musicId) {
-        Like like = new Like();
-        like.setMusicId(musicId);
-        like.setUserId(UserContext.getUserId());
-        likeService.deleteLike(like);
         return Result.success();
     }
 }
