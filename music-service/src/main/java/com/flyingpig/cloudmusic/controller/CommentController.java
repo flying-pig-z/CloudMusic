@@ -33,7 +33,7 @@ public class CommentController {
     @PostMapping("")
     @ApiOperation("发表评论")
     public Result addComment(@RequestBody Comment addComment) {
-        if (addComment.getContent().equals(null)) {
+        if ("".equals(addComment.getContent())||addComment.getContent()==null) {
             return Result.error(500, "评论不能为空");
         }
         addComment.setUserId(UserContext.getUserId());

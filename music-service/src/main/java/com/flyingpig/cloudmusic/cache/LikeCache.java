@@ -8,6 +8,8 @@ import com.flyingpig.cloudmusic.mapper.MusicMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.StringRedisConnection;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -54,22 +56,24 @@ public class LikeCache {
 
     public void likedataFromDbToRedis(Long musicId) {
         Music music = musicMapper.selectById(musicId);
-        if (music != null) {
+        if (music != null && music.getLikeNum() > 0) {
             LambdaQueryWrapper<Like> likeLambdaQueryWrapper = new LambdaQueryWrapper<>();
             likeLambdaQueryWrapper.eq(Like::getMusicId, musicId);
-            //如果没有点赞数据
-            if (music.getLikeNum() == 0) {
-                return;
-            }
             List<Like> likeList = likeMapper.selectList(likeLambdaQueryWrapper);
-            // 添加元素到集合
-            for (Like like : likeList) {
-                stringRedisTemplate.opsForSet().add(MUSIC_LIKE_KEY + musicId, like.getUserId().toString());
-            }
-            // 设置集合的过期时间
-            stringRedisTemplate.expire(MUSIC_LIKE_KEY + musicId, MUSIC_LIKE_TTL, TimeUnit.DAYS);
+            // 使用pipeline进行批处理优化
+            RedisCallback<Object> pipelineCallback = (connection) -> {
+                StringRedisConnection stringRedisConn = (StringRedisConnection) connection;
+                for (Like like : likeList) {
+                    stringRedisConn.sAdd(MUSIC_LIKE_KEY + musicId, like.getUserId().toString());
+                }
+                // 设置集合的过期时间
+                stringRedisConn.expire(MUSIC_LIKE_KEY + musicId, MUSIC_LIKE_TTL * 24 * 60 * 60); // 过期时间单位是秒
+                return null;
+            };
+            stringRedisTemplate.executePipelined(pipelineCallback);
         }
     }
+
 
     public Boolean judgeLikeOrNotByMusicIdAndUserId(Long musicId,Long userId){
         Long likeNum = this.getLikeNumByMusicId(musicId);
