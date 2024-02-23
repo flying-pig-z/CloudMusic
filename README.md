@@ -54,6 +54,15 @@ UI:https://www.figma.com/file/Y4OJRtIMkpFlonuqF8EFpX/%E5%96%B5%E5%90%AC%EF%BC%88
 
 4.redis优化点赞
 ![whiteboard_exported_image (2)](https://github.com/flying-pig-z/CloudMusic/assets/117554874/66a57721-56c0-45a7-910d-8163d2d63595)
+> 设计思路：<br>
+> 【1】最终一致性：一般一致性采用的是Cache Aside Pattern，先更新数据库再删除缓存，但是的话获取某个音乐的点赞集合到redis中是个耗时的操作。在加上更新的频繁，所以不能采用删除缓存。<br>
+> 那要不就先更新数据库再更新缓存，要不就先更新缓存再更新数据库。<br>
+> 这里采用Write Behind Pattern。先更新缓存，再异步更新数据库。优点是效率很高，数据库压力很小，缺点是异步增大了数据库和缓存无法强一致的概率。<br>
+> 【2】缓存穿透：防止数据库中的数据不存在导致这部分请求一直落在数据库。
+> 一般的解决方法有两种，一种是缓存空值，但是redis的复杂类型不能为空，另外一种是布隆过滤器，但是布隆过滤器会产生冲突。
+> 所以我在redis中也设计了一个变量作为计数器存储点赞总数，来判断缓存不存在是数据过期还是数据库不存在。同时点赞总数也是热点查询数据。
+> 【3】竞态问题：使用redission加锁解决竞态造成点赞数更新错误。
+> 场景：例如，两个用户同时查看该音乐的点赞数为10，并都想取消点赞，但是由于并发操作，最终点赞数可能只减少了1次而不是2次。
 
 5.mq进行异步解耦优化上传接口
 ![whiteboard_exported_image (1)](https://github.com/flying-pig-z/CloudMusic/assets/117554874/5a0fd272-ba9c-45c5-96de-2dcfab4f4d66)
