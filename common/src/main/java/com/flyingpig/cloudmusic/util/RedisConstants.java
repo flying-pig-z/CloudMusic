@@ -24,5 +24,9 @@ public class RedisConstants {
 
     public static final Long MUSIC_LIKENUM_TTL=30L;
 
+    public static final String LIKE_LOCK_KEY = "lock:like:";
+
+    public static final String DISLIKE_LOCK_KEY = "lock:dislike:";
+
 
 }

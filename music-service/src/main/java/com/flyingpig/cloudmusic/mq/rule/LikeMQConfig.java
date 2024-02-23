@@ -1,9 +1,6 @@
 package com.flyingpig.cloudmusic.mq.rule;
 
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.FanoutExchange;
-import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,15 +12,15 @@ public class LikeMQConfig {
 
 
     @Bean
-    public FanoutExchange likeFanoutExchange(){
-        return new FanoutExchange(MUSIC_LIKE_EXCHANGE_NAME);
+    public DirectExchange likeDirectExchange(){
+        return new DirectExchange(MUSIC_LIKE_EXCHANGE_NAME);
     }
 
     //队列1
 
 
     @Bean
-    public Queue likeFanoutQueue1() {
+    public Queue likeDirectQueue1() {
         return new Queue(MUSIC_LIKE_QUEUE_NAME1);
     }
 
@@ -31,15 +28,15 @@ public class LikeMQConfig {
      * 绑定队列1和交换机
      */
     @Bean
-    public Binding likeBindingQueue1(Queue likeFanoutQueue1, FanoutExchange likeFanoutExchange){
-        return BindingBuilder.bind(likeFanoutQueue1).to(likeFanoutExchange);
+    public Binding likeBindingQueue1(Queue likeDirectQueue1, DirectExchange likeDirectExchange){
+        return BindingBuilder.bind(likeDirectQueue1).to(likeDirectExchange).with("1");
     }
 
     //队列2
 
 
     @Bean
-    public Queue likeFanoutQueue2() {
+    public Queue likeDirectQueue2() {
         return new Queue(MUSIC_LIKE_QUEUE_NAME2);
     }
 
@@ -47,7 +44,7 @@ public class LikeMQConfig {
      * 绑定队列2和交换机
      */
     @Bean
-    public Binding likeBindingQueue2(Queue likeFanoutQueue2, FanoutExchange likeFanoutExchange){
-        return BindingBuilder.bind(likeFanoutQueue2).to(likeFanoutExchange);
+    public Binding likeBindingQueue2(Queue likeDirectQueue2, DirectExchange likeDirectExchange){
+        return BindingBuilder.bind(likeDirectQueue2).to(likeDirectExchange).with("2");
     }
 }
