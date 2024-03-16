@@ -1,17 +1,14 @@
 package com.flyingpig.cloudmusic.service.impl;
 
 import cn.hutool.core.util.BooleanUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.flyingpig.cloudmusic.dataobject.entity.Like;
 import com.flyingpig.cloudmusic.dataobject.message.LikeMessage;
 import com.flyingpig.cloudmusic.mapper.LikeMapper;
 import com.flyingpig.cloudmusic.mapper.MusicMapper;
 import com.flyingpig.cloudmusic.service.LikeService;
 import com.flyingpig.cloudmusic.cache.LikeCache;
-import com.flyingpig.cloudmusic.util.MyStringRedisTemplate;
 import com.flyingpig.cloudmusic.util.RedissionUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.Redisson;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -23,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.concurrent.TimeUnit;
 
 import static com.flyingpig.cloudmusic.util.RabbitMQConstants.*;
-import static com.flyingpig.cloudmusic.util.RedisConstants.*;
+import static com.flyingpig.cloudmusic.constant.RedisConstants.*;
 
 @Slf4j
 @Service

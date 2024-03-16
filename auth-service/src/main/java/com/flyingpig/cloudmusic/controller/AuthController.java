@@ -12,7 +12,7 @@ import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import static com.flyingpig.cloudmusic.util.RedisConstants.USER_BLACKLIST_KEY;
+import static com.flyingpig.cloudmusic.constant.RedisConstants.USER_BLACKLIST_KEY;
 
 @RestController
 @RequestMapping("/users")

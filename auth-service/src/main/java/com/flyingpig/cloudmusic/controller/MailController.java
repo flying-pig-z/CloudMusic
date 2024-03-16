@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 
-import static com.flyingpig.cloudmusic.util.RedisConstants.EMAIL_VERIFYCODE_KEY;
-import static com.flyingpig.cloudmusic.util.RedisConstants.EMAIL_VERIFYCODE_TTL;
+import static com.flyingpig.cloudmusic.constant.RedisConstants.EMAIL_VERIFYCODE_KEY;
+import static com.flyingpig.cloudmusic.constant.RedisConstants.EMAIL_VERIFYCODE_TTL;
 
 @RestController
 @RequestMapping("/email")

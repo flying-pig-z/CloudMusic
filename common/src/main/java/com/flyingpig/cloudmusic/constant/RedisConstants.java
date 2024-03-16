@@ -1,4 +1,4 @@
-package com.flyingpig.cloudmusic.util;
+package com.flyingpig.cloudmusic.constant;
 
 public class RedisConstants {
 

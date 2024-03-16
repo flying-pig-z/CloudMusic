@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import static com.flyingpig.cloudmusic.util.RedisConstants.*;
+import static com.flyingpig.cloudmusic.constant.RedisConstants.*;
 
 @Service
 @Slf4j

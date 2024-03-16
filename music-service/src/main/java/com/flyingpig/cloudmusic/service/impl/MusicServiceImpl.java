@@ -5,7 +5,6 @@ import com.flyingpig.cloudmusic.dataobject.dto.*;
 import com.flyingpig.cloudmusic.dataobject.entity.Collection;
 import com.flyingpig.cloudmusic.dataobject.entity.Music;
 import com.flyingpig.cloudmusic.mapper.CollectionMapper;
-import com.flyingpig.cloudmusic.mapper.LikeMapper;
 import com.flyingpig.cloudmusic.mapper.MusicMapper;
 import com.flyingpig.cloudmusic.service.MusicService;
 import com.flyingpig.cloudmusic.cache.LikeCache;
@@ -23,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.flyingpig.cloudmusic.util.RedisConstants.MUSIC_RANKLIST_KEY;
+import static com.flyingpig.cloudmusic.constant.RedisConstants.MUSIC_RANKLIST_KEY;
 
 /**
  * @author flyingpig

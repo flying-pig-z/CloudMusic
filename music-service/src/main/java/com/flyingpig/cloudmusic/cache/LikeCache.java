@@ -6,7 +6,6 @@ import com.flyingpig.cloudmusic.dataobject.entity.Music;
 import com.flyingpig.cloudmusic.mapper.LikeMapper;
 import com.flyingpig.cloudmusic.mapper.MusicMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.StringRedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
@@ -16,8 +15,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static com.flyingpig.cloudmusic.util.RedisConstants.*;
-import static com.flyingpig.cloudmusic.util.RedisConstants.MUSIC_LIKE_KEY;
+import static com.flyingpig.cloudmusic.constant.RedisConstants.*;
+import static com.flyingpig.cloudmusic.constant.RedisConstants.MUSIC_LIKE_KEY;
 
 @Slf4j
 @Component
