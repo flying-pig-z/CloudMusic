@@ -1,5 +1,6 @@
 package com.flyingpig.cloudmusic.result;
 
+import com.flyingpig.cloudmusic.constant.StatusCode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,12 +15,12 @@ public class Result {
 
     //增删改
     public static Result success() {
-        return new Result(200, "success", null);
+        return new Result(StatusCode.OK, "success", null);
     }
 
     //查询 成功响应
     public static Result success(Object data) {
-        return new Result(200, "success", data);
+        return new Result(StatusCode.OK, "success", data);
     }
 
     //失败响应
