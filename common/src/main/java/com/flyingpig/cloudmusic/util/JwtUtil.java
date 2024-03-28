@@ -62,8 +62,8 @@ public class JwtUtil {
      * @param ttlMillis
      * @return
      */
-    public static String createJWT(String subject, Long ttlMillis,String id) {
-        JwtBuilder builder = getJwtBuilder(subject, ttlMillis, id);// 设置过期时间
+    public static String createJWT(String subject, Long ttlMillis,String uuid) {
+        JwtBuilder builder = getJwtBuilder(subject, ttlMillis, uuid);// 设置过期时间
         return builder.compact();
     }
 

@@ -19,8 +19,8 @@ public class UserClientFallbackFactory implements FallbackFactory<UserClients> {
             }
 
             @Override
-            public boolean uuidIsInBlackListOrNot(String uuid) {
-                log.error("查询黑名单异常");
+            public boolean uuidIsInWhiteListOrNot(String userId, String uuid) {
+                log.error("查询白名单异常");
                 return false;
             }
         };

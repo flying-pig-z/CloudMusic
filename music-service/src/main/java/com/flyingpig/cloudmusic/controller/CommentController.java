@@ -33,10 +33,10 @@ public class CommentController {
     @PostMapping("")
     @ApiOperation("发表评论")
     public Result addComment(@RequestBody Comment addComment) {
-        if ("".equals(addComment.getContent())||addComment.getContent()==null) {
+        if ("".equals(addComment.getContent()) || addComment.getContent() == null) {
             return Result.error(500, "评论不能为空");
         }
-        addComment.setUserId(UserContext.getUserId());
+        addComment.setUserId(UserContext.getUser().getUserId());
         addComment.setTime(LocalDateTime.now());
         commentService.addComment(addComment);
         return Result.success();

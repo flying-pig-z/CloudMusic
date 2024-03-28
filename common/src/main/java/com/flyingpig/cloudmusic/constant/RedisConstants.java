@@ -6,9 +6,9 @@ public class RedisConstants {
 
     public static final Long USER_INFO_TTL=30L;
 
-    public static final String USER_BLACKLIST_KEY="user:blacklist:";
+    public static final String USER_LOGIN_KEY="user:login:";
 
-    public static final Long USER_BLACKLIST_TTL = 30L;
+    public static final Long USER_LOGIN_TTL = 30L;
 
     public static final String EMAIL_VERIFYCODE_KEY="email:verifycode:";
 

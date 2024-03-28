@@ -27,10 +27,10 @@ public class LikeController {
     public Result likeMusic(@RequestParam Long musicId) {
         Like like = new Like();
         like.setMusicId(musicId);
-        like.setUserId(UserContext.getUserId());
+        like.setUserId(UserContext.getUser().getUserId());
         boolean judge = likeService.likeMusic(like);
-        if(!judge){
-            return Result.error(500,"音乐不存在");
+        if (!judge) {
+            return Result.error(500, "音乐不存在");
         }
         return Result.success();
     }

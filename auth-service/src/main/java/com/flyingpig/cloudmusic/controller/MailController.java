@@ -42,7 +42,7 @@ public class MailController {
 
     @GetMapping("/verificationCode")
     @ApiOperation("用户获取验证码")
-    public Result sendEmailVerificationCode(@RequestParam String email) {
+    public Result sendEmailVerificationCode(String email) {
         //检查email是否符合格式
         if (!EmailUtil.judgeEmailFormat(email)) {
             return Result.error(500, "邮箱不符合格式");

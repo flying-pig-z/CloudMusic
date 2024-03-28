@@ -49,7 +49,7 @@ public class MusicServiceImpl implements MusicService {
         Music music = musicMapper.selectById(musicId);
         MusicInfo result = new MusicInfo();
         BeanUtils.copyProperties(music, result); // 将 music 对象属性值复制到 result 对象上
-        result.setLikeOrNot(likeCache.judgeLikeOrNotByMusicIdAndUserId(musicId,userId));
+        result.setLikeOrNot(likeCache.judgeLikeOrNotByMusicIdAndUserId(musicId, userId));
         LambdaQueryWrapper<Collection> collectionLambdaQueryWrapper = new LambdaQueryWrapper<>();
         collectionLambdaQueryWrapper.eq(Collection::getUserId, userId).eq(Collection::getMusicId, musicId);
         Collection collection = collectionMapper.selectOne(collectionLambdaQueryWrapper);
@@ -96,24 +96,29 @@ public class MusicServiceImpl implements MusicService {
     }
 
     @Override
-    public void deleteMusicByIdAndUserId(Long musicId,Long userId) {
-        if(musicMapper.selectById(musicId).getUploadUser().equals(userId)) {
+    public void deleteMusicByIdAndUserId(Long musicId, Long userId) {
+        if (musicMapper.selectById(musicId).getUploadUser().equals(userId)) {
             musicMapper.deleteById(musicId);
         }
     }
 
     @Override
     public List<UploadMusicInfo> selectUploadMusics() {
-        LambdaQueryWrapper<Music> musicLambdaQueryWrapper=new LambdaQueryWrapper<>();
-        musicLambdaQueryWrapper.eq(Music::getUploadUser,UserContext.getUserId());
-        List<Music>  musicList=musicMapper.selectList(musicLambdaQueryWrapper);
-        List<UploadMusicInfo> uploadMusicInfos=new ArrayList<>();
-        for(Music music:musicList){
-            UploadMusicInfo uploadMusicInfo=new UploadMusicInfo();
-            BeanUtils.copyProperties(music,uploadMusicInfo);
+        LambdaQueryWrapper<Music> musicLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        musicLambdaQueryWrapper.eq(Music::getUploadUser, UserContext.getUser().getUserId());
+        List<Music> musicList = musicMapper.selectList(musicLambdaQueryWrapper);
+        List<UploadMusicInfo> uploadMusicInfos = new ArrayList<>();
+        for (Music music : musicList) {
+            UploadMusicInfo uploadMusicInfo = new UploadMusicInfo();
+            BeanUtils.copyProperties(music, uploadMusicInfo);
             uploadMusicInfos.add(uploadMusicInfo);
         }
         return uploadMusicInfos;
+    }
+
+    @Override
+    public void deleteMusicById(Long musicId) {
+        musicMapper.deleteById(musicId);
     }
 
 }

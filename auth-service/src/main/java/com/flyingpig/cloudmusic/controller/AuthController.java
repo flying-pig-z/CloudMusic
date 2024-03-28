@@ -1,5 +1,6 @@
 package com.flyingpig.cloudmusic.controller;
 
+import com.flyingpig.cloudmusic.constant.StatusCode;
 import com.flyingpig.cloudmusic.dataobject.entity.User;
 import com.flyingpig.cloudmusic.result.Result;
 import com.flyingpig.cloudmusic.service.UserService;
@@ -12,7 +13,9 @@ import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import static com.flyingpig.cloudmusic.constant.RedisConstants.USER_BLACKLIST_KEY;
+import java.util.Objects;
+
+import static com.flyingpig.cloudmusic.constant.RedisConstants.USER_LOGIN_KEY;
 
 @RestController
 @RequestMapping("/users")
@@ -29,21 +32,28 @@ public class AuthController {
     @PostMapping("/login")
     @ApiOperation("用户登录")
     public Result login(@RequestBody User user) {
-        System.out.println(user);
-        return userService.login(user);
+        try {
+            System.out.println(user);
+            return userService.login(user);
+        } catch (RedisConnectionFailureException e) {
+            return Result.error(StatusCode.SERVERERROR, "redis崩溃");
+        } catch (Exception e) {
+            System.out.println(e);
+            return Result.error(StatusCode.SERVERERROR, "账号或密码错误，请重新登录");
+        }
     }
 
     @PostMapping("/logout")
     @ApiOperation("用户登出")
     public Result logout(@RequestHeader String Authorization) {
-        String uuid = JwtUtil.getUUIDFromJWT(Authorization);
-        return userService.logout(uuid);
+        String userId = JwtUtil.parseJwt(Authorization).getSubject();
+        return userService.logout(userId);
     }
 
-    @GetMapping("/blacklist")
-    public boolean uuidIsInBlackListOrNot(@RequestParam String uuid) {
+    @GetMapping("/whitelist")
+    public boolean uuidIsInWhiteListOrNot(String userId, String uuid) {
         try {
-            return stringRedisTemplate.opsForValue().get(USER_BLACKLIST_KEY + uuid) != null;
+            return Objects.equals(stringRedisTemplate.opsForValue().get(USER_LOGIN_KEY + userId), uuid);
         } catch (RedisConnectionFailureException e) {
             log.error("redis崩溃啦啦啦啦啦");
         }

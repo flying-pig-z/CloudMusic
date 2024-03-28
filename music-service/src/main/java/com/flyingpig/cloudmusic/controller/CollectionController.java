@@ -27,7 +27,7 @@ public class CollectionController {
     public Result collectMusic(@RequestParam @NotNull Long musicId) {
         Collection collection = new Collection();
         collection.setMusicId(musicId);
-        collection.setUserId(UserContext.getUserId());
+        collection.setUserId(UserContext.getUser().getUserId());
         boolean isCollectionExist = collectionService.isCollectionExist(collection);
         if (isCollectionExist) {
             collectionService.deleteCollection(collection);

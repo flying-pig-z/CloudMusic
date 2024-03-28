@@ -1,6 +1,8 @@
 package com.flyingpig.cloudmusic.songlist.controller;
 
 
+import com.flyingpig.cloudmusic.aop.BeforeAuthorize;
+import com.flyingpig.cloudmusic.constant.StatusCode;
 import com.flyingpig.cloudmusic.songlist.dataobject.dto.SonglistInfo;
 import com.flyingpig.cloudmusic.songlist.dataobject.entity.Songlist;
 import com.flyingpig.cloudmusic.songlist.service.SonglistService;
@@ -25,11 +27,11 @@ public class SonglistController {
     @PostMapping
     public Result addSonglist(@RequestParam String songlistName) {
         try {
-            Songlist songlist = new Songlist(null, songlistName, UserContext.getUserId());
+            Songlist songlist = new Songlist(null, songlistName, UserContext.getUser().getUserId());
             songlistService.addSonglist(songlist);
             return Result.success();
         } catch (DuplicateKeyException exception) {
-            return Result.error(500, "重复添加歌单");
+            return Result.error(StatusCode.SERVERERROR, "重复添加歌单");
         }
     }
 
@@ -43,7 +45,15 @@ public class SonglistController {
     @ApiOperation("返回用户所有歌单")
     @GetMapping
     public Result listSonglistByUserId() {
-        List<SonglistInfo> songlistInfoList = songlistService.listSonglistByUserId(UserContext.getUserId());
+        List<SonglistInfo> songlistInfoList = songlistService.listSonglistByUserId(UserContext.getUser().getUserId());
+        return Result.success(songlistInfoList);
+    }
+
+    @ApiOperation("管理员查看用户所有歌单")
+    @BeforeAuthorize(role = "admin")
+    @GetMapping
+    public Result adminListSonglistByUserId(Long userId) {
+        List<SonglistInfo> songlistInfoList = songlistService.listSonglistByUserId(userId);
         return Result.success(songlistInfoList);
     }
 

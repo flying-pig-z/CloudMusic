@@ -42,16 +42,22 @@ public class UserServiceImpl implements UserService {
         //AuthenticationManager authenticate进行用户认证
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
+
         //如果认证没通过，给出对应的提示
         if (Objects.isNull(authenticate)) {
             throw new RuntimeException("登录失败");
         }
+
         //如果认证通过了，使用userid生成一个jwt jwt存入ResponseResult返回
         LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
         String userid = loginUser.getUser().getId().toString();
-        String jwt = JwtUtil.createJWT(userid);
-        //把完整的用户信息存入redis  userid作为key
-//        redisCache.setCacheObject("login:"+userid,loginUser);
+        String uuid = JwtUtil.getUUID();
+        String jwt = JwtUtil.createJWT(userid, JwtUtil.JWT_TTL, uuid);
+
+        //将jwt存入redis中，键为userId,值为token的uuid，不直接存jwt可以节省缓存
+        myStringRedisTemplate.set(USER_LOGIN_KEY + userid, uuid, USER_LOGIN_TTL, TimeUnit.DAYS);
+
+        //返回
         Map<String, Object> map = new HashMap<>();
         map.put("token", jwt);
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
@@ -63,9 +69,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Result logout(String uuid) {
+    public Result logout(String userId) {
         //将token加入黑名单
-        myStringRedisTemplate.set(USER_BLACKLIST_KEY + uuid, "", USER_BLACKLIST_TTL, TimeUnit.DAYS);
+        myStringRedisTemplate.delete(USER_LOGIN_KEY + userId);
         return new Result(200, "退出成功", null);
     }
 
@@ -139,6 +145,11 @@ public class UserServiceImpl implements UserService {
         userMapper.updateById(user);
         //删除缓存，防止数据不一致
         myStringRedisTemplate.delete(USER_INFO_KEY + userId);
+    }
+
+    @Override
+    public void deleteUserById(Long userId) {
+        userMapper.deleteById(userId);
     }
 
 

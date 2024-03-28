@@ -2,6 +2,7 @@ package com.flyingpig.gateway.filter;
 
 import com.alibaba.cloud.commons.lang.StringUtils;
 import com.alibaba.fastjson.JSON;
+import com.flyingpig.cloudmusic.constant.StatusCode;
 import com.flyingpig.cloudmusic.result.Result;
 import com.flyingpig.cloudmusic.util.JwtUtil;
 import com.flyingpig.feign.clients.UserClients;
@@ -19,14 +20,11 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import javax.annotation.Resource;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-import java.util.concurrent.Future;
 
 @Component
 @Slf4j
@@ -36,6 +34,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
     UserClients userClients;
     //白名单
     private static final List<String> whitelist = new ArrayList<>();
+
     static {
         //加载白名单
         loadWhitelist();
@@ -61,27 +60,29 @@ public class AuthFilter implements GlobalFilter, Ordered {
         System.out.println(requestUrl);
         //2.检查token是否存在
         String tokenStr = exchange.getRequest().getHeaders().getFirst("Authorization");
-        if(StringUtils.isBlank(tokenStr)){
-            return getVoidMono(response, Result.error(401,"token为空"));
+        if (StringUtils.isBlank(tokenStr)) {
+            return getVoidMono(response, Result.error(StatusCode.UNAUTHORIZED, "token为空"));
         }
         //3.判断是否是有效的token
-        String userId=null;
+        String userId = null;
         try {
             Claims claims = JwtUtil.parseJwt(tokenStr);
-            userId=claims.getSubject();
+            userId = claims.getSubject();
             //4.判断是否在黑名单里
-            String uuid=claims.getId();
-            if(userClients.uuidIsInBlackListOrNot(uuid)){
-                return getVoidMono(response, Result.error(401, "该token已登出"));
+            String uuid = claims.getId();
+            if (!userClients.uuidIsInWhiteListOrNot(userId, uuid)) {
+                return getVoidMono(response, Result.error(StatusCode.UNAUTHORIZED, "该token已失效"));
             }
         } catch (Exception exception) {
             exception.printStackTrace();
-            return getVoidMono(response,Result.error(401,"身份过期或身份证明非法"));
+            return getVoidMono(response, Result.error(StatusCode.UNAUTHORIZED, "身份过期或身份证明非法"));
         }
-        //5.传递用户id给各个微服务，避免再次解析token
+        //5.传递用户id和用户权限信息给各个微服务，避免再次解析token
         String finalUserId = userId;
-        ServerWebExchange swe=exchange.mutate()
+        String userRole = userClients.selectUserInfoByUserId(Long.parseLong(userId)).getRole();
+        ServerWebExchange swe = exchange.mutate()
                 .request(builder -> builder.header("userId", finalUserId))
+                .request(builder -> builder.header("userRole", userRole))
                 .build();
         //6.检查通过放行
         return chain.filter(swe);
@@ -96,7 +97,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
     }
 
     //响应式的response包装
-    private Mono<Void> getVoidMono(ServerHttpResponse serverHttpResponse,Result result) {
+    private Mono<Void> getVoidMono(ServerHttpResponse serverHttpResponse, Result result) {
         serverHttpResponse.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
         DataBuffer dataBuffer = serverHttpResponse.bufferFactory().wrap(JSON.toJSONString(result).getBytes());
         return serverHttpResponse.writeWith(Flux.just(dataBuffer));

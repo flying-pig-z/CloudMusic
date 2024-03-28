@@ -1,5 +1,6 @@
 package com.flyingpig.cloudmusic.controller;
 
+import com.flyingpig.cloudmusic.aop.BeforeAuthorize;
 import com.flyingpig.cloudmusic.result.Result;
 import com.flyingpig.cloudmusic.service.UserService;
 import com.flyingpig.cloudmusic.util.AliOSSUtils;
@@ -34,7 +35,7 @@ public class UserController {
     @ApiOperation("获取用户信息")
     public Result selectUserInfoByUserId() {
         //封装完毕后调用service层的add方法
-        return Result.success(userService.selectUserInfoByUserId(UserContext.getUserId()));
+        return Result.success(userService.selectUserInfoByUserId(UserContext.getUser().getUserId()));
     }
 
     @PutMapping("/avatar")
@@ -42,15 +43,24 @@ public class UserController {
     public Result updateUserAvatar(@RequestParam MultipartFile avatar) throws IOException {
         //封装完毕后调用service层的add方法
         String avatarUrl = aliOSSUtils.upload(avatar);
-        userService.updateAvatar(UserContext.getUserId(), avatarUrl);
+        userService.updateAvatar(UserContext.getUser().getUserId(), avatarUrl);
         return Result.success();
     }
 
     @PutMapping("/username")
     @ApiOperation("修改用户名")
-    public Result updateUserName(@RequestParam String userName) {
-        userService.updateUserName(UserContext.getUserId(), userName);
+    public Result updateUserName(String userName) {
+        userService.updateUserName(UserContext.getUser().getUserId(), userName);
         return Result.success();
     }
+
+    @DeleteMapping
+    @BeforeAuthorize(role = "admin")
+    @ApiOperation("管理员删除用户")
+    public Result deleteUser(Long userId) {
+        userService.deleteUserById(userId);
+        return Result.success();
+    }
+
 
 }

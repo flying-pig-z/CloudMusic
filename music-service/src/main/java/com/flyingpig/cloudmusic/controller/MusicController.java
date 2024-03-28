@@ -2,6 +2,7 @@ package com.flyingpig.cloudmusic.controller;
 
 
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.flyingpig.cloudmusic.aop.BeforeAuthorize;
 import com.flyingpig.cloudmusic.dataobject.dto.*;
 import com.flyingpig.cloudmusic.dataobject.entity.Music;
 import com.flyingpig.cloudmusic.dataobject.message.MusicUploadMessage;
@@ -37,12 +38,10 @@ public class MusicController {
     RabbitTemplate rabbitTemplate;
 
 
-
-
     @GetMapping("/{musicId}")
     @ApiOperation("音乐界面查看返回该音乐的所有信息")
     public Result selectMusicInfoById(@PathVariable Long musicId) {
-        MusicInfo musicInfo = musicService.selectMusicInfoByUserIdAndMusicId(UserContext.getUserId(), musicId);
+        MusicInfo musicInfo = musicService.selectMusicInfoByUserIdAndMusicId(UserContext.getUser().getUserId(), musicId);
         return Result.success(musicInfo);
     }
 
@@ -77,23 +76,31 @@ public class MusicController {
         Music music = new Music(null, name, introduce, null, null, null, null, null, singerName);
         music.setLikeNum(Long.parseLong("0"));
         music.setCollectNum(Long.parseLong("0"));
-        music.setUploadUser(UserContext.getUserId());
+        music.setUploadUser(UserContext.getUser().getUserId());
         // 将文件信息发送到RabbitMQ队列中
-        rabbitTemplate.convertAndSend(MUSIC_UPLOAD_EXCHANGE_NAME,"", new MusicUploadMessage());
+        rabbitTemplate.convertAndSend(MUSIC_UPLOAD_EXCHANGE_NAME, "", new MusicUploadMessage());
         return Result.success();
     }
 
     @DeleteMapping("")
     @ApiOperation("删除自己上传的音乐")
-    public Result deleteMusic(@RequestParam Long musicId){
-        musicService.deleteMusicByIdAndUserId(musicId,UserContext.getUserId());
+    public Result deleteMusic(@RequestParam Long musicId) {
+        musicService.deleteMusicByIdAndUserId(musicId, UserContext.getUser().getUserId());
         return Result.success();
     }
 
     @GetMapping("/upload-music")
-    public Result selectUploadMusics(){
-        List<UploadMusicInfo> result= musicService.selectUploadMusics();
+    public Result selectUploadMusics() {
+        List<UploadMusicInfo> result = musicService.selectUploadMusics();
         return Result.success(result);
+    }
+
+    @DeleteMapping("/admin")
+    @BeforeAuthorize(role = "admin")
+    @ApiOperation("管理员删除任何上传的音乐")
+    public Result deleteMusicByAdmin(Long musicId) {
+        musicService.deleteMusicById(musicId);
+        return Result.success();
     }
 
 }

@@ -26,4 +26,9 @@ public class StatusCode {
      */
     public static final int SERVERERROR = 500;
 
+    /**
+     * 未经授权
+     */
+    public static final int UNAUTHORIZED = 401;
+
 }

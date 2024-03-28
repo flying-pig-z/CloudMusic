@@ -25,4 +25,6 @@ public interface MusicService {
     void deleteMusicByIdAndUserId(Long musicId, Long userId);
 
     List<UploadMusicInfo> selectUploadMusics();
+
+    void deleteMusicById(Long musicId);
 }

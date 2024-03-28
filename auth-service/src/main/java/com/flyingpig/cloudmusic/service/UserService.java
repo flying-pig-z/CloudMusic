@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public interface UserService {
     Result login(User user);
 
-    Result logout(String uuid);
+    Result logout(String userId);
 
     void addUser(User user);
 
@@ -19,4 +19,6 @@ public interface UserService {
     void updateUserName(Long userId, String userName);
 
     void updateAvatar(Long userId, String avatarUrl);
+
+    void deleteUserById(Long userId);
 }
