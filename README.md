@@ -73,9 +73,9 @@ UI:https://www.figma.com/file/Y4OJRtIMkpFlonuqF8EFpX/%E5%96%B5%E5%90%AC%EF%BC%88
 
 这么设计主要是因为前端在用户上传后返回给客户端审核后自动发布，上传文件的时效性并不高。再加上上传接口是个耗时的操作所以采用异步进行解耦。
 
+6.使用ElasticSearch优化搜索
+
 ## 代办
 
-1.es搜索引擎优化搜索
-
-2.xxx-job优化大文件上传
+xxx-job优化大文件上传
 

@@ -2,8 +2,10 @@ package com.flyingpig.cloudmusic.service;
 
 import com.flyingpig.cloudmusic.dataobject.dto.*;
 import com.flyingpig.cloudmusic.dataobject.entity.Music;
+import com.flyingpig.cloudmusic.dataobject.es.MusicDoc;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -18,8 +20,6 @@ public interface MusicService {
 
     MusicDetail selectMusicDetailByMusicId(Long musicId);
 
-    List<MusicIdAndName> searchMusic(String keyword);
-
     void addMusic(Music music);
 
     void deleteMusicByIdAndUserId(Long musicId, Long userId);
@@ -27,4 +27,6 @@ public interface MusicService {
     List<UploadMusicInfo> selectUploadMusics();
 
     void deleteMusicById(Long musicId);
+
+
 }

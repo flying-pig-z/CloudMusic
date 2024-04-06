@@ -22,10 +22,10 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="auth-service" options="-parameters" />
-      <module name="common" options="-parameters" />
+      <module name="common" options="" />
       <module name="eureka-server" options="-parameters" />
-      <module name="feign-api" options="-parameters" />
-      <module name="gateway" options="-parameters" />
+      <module name="feign-api" options="" />
+      <module name="gateway" options="" />
       <module name="music-service" options="-parameters" />
       <module name="songlist-service" options="-parameters" />
     </option>

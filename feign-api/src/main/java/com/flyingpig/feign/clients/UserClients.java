@@ -13,7 +13,7 @@ public interface UserClients {
     UserInfo selectUserInfoByUserId(@PathVariable("userId") Long userId);
 
     @GetMapping("/users/whitelist")
-    boolean uuidIsInWhiteListOrNot(@RequestParam String userId, @RequestParam String uuid);
+    boolean uuidIsInWhiteListOrNot(@RequestParam(value = "userId") String userId, @RequestParam(value = "uuid") String uuid);
 
 
 }

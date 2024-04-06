@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.flyingpig.cloudmusic.dataobject.dto.*;
 import com.flyingpig.cloudmusic.dataobject.entity.Collection;
 import com.flyingpig.cloudmusic.dataobject.entity.Music;
+import com.flyingpig.cloudmusic.dataobject.es.MusicDoc;
 import com.flyingpig.cloudmusic.mapper.CollectionMapper;
 import com.flyingpig.cloudmusic.mapper.MusicMapper;
 import com.flyingpig.cloudmusic.service.MusicService;
 import com.flyingpig.cloudmusic.cache.LikeCache;
+import com.flyingpig.cloudmusic.util.ElasticSearchUtil;
 import com.flyingpig.cloudmusic.util.UserContext;
 import com.flyingpig.feign.clients.UserClients;
 import com.flyingpig.feign.dataobject.dto.UserInfo;
@@ -19,6 +21,7 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +45,9 @@ public class MusicServiceImpl implements MusicService {
 
     @Autowired
     LikeCache likeCache;
+
+    @Autowired
+    ElasticSearchUtil elasticSearchUtil;
 
 
     @Override
@@ -77,20 +83,6 @@ public class MusicServiceImpl implements MusicService {
     }
 
     @Override
-    public List<MusicIdAndName> searchMusic(String keyword) {
-        LambdaQueryWrapper<Music> musicLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        musicLambdaQueryWrapper.like(Music::getName, keyword);
-        List<Music> musics = musicMapper.selectList(musicLambdaQueryWrapper);
-        List<MusicIdAndName> result = new ArrayList<>();
-        for (Music music : musics) {
-            MusicIdAndName musicIdAndName = new MusicIdAndName();
-            BeanUtils.copyProperties(music, musicIdAndName);
-            result.add(musicIdAndName);
-        }
-        return result;
-    }
-
-    @Override
     public void addMusic(Music music) {
         musicMapper.insert(music);
     }
@@ -120,5 +112,7 @@ public class MusicServiceImpl implements MusicService {
     public void deleteMusicById(Long musicId) {
         musicMapper.deleteById(musicId);
     }
+
+
 
 }

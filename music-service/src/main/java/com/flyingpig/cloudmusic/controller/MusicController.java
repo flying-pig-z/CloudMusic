@@ -5,6 +5,7 @@ import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.flyingpig.cloudmusic.aop.BeforeAuthorize;
 import com.flyingpig.cloudmusic.dataobject.dto.*;
 import com.flyingpig.cloudmusic.dataobject.entity.Music;
+import com.flyingpig.cloudmusic.dataobject.es.MusicDoc;
 import com.flyingpig.cloudmusic.dataobject.message.MusicUploadMessage;
 import com.flyingpig.cloudmusic.result.Result;
 import com.flyingpig.cloudmusic.service.MusicService;
@@ -58,12 +59,7 @@ public class MusicController {
         return musicService.selectMusicDetailByMusicId(musicId);
     }
 
-    @GetMapping("/search")
-    @ApiOperation("根据关键词搜索音乐")
-    public Result searchMusic(@RequestParam String keyword) {
-        List<MusicIdAndName> result = musicService.searchMusic(keyword);
-        return Result.success(result);
-    }
+
 
     @PostMapping
     @ApiOperation("上传音乐")

@@ -8,4 +8,8 @@
         SELECT * FROM music ORDER BY (like_num*1 + collect_num*2) DESC LIMIT 50;
     </select>
 
+    <select id="selectAll" resultType="com.flyingpig.cloudmusic.dataobject.es.MusicDoc">
+        SELECT * FROM music;
+    </select>
+
 </mapper>
