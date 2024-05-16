@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-import static com.flyingpig.cloudmusic.util.RabbitMQConstants.*;
+import static com.flyingpig.cloudmusic.constant.RabbitMQConstants.*;
 
 @Component
 @Slf4j

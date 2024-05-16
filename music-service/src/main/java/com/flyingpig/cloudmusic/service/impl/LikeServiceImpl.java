@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.concurrent.TimeUnit;
 
-import static com.flyingpig.cloudmusic.util.RabbitMQConstants.*;
+import static com.flyingpig.cloudmusic.constant.RabbitMQConstants.*;
 import static com.flyingpig.cloudmusic.constant.RedisConstants.*;
 
 @Slf4j

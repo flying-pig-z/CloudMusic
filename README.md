@@ -11,7 +11,7 @@ UI:https://www.figma.com/file/Y4OJRtIMkpFlonuqF8EFpX/%E5%96%B5%E5%90%AC%EF%BC%88
 
 ## 技术栈
 
-后端采用SpirngBoot+Spring Cloud Alibaba+redis+rabbitmq进行开发。采用docker进行部署。
+后端采用SpirngBoot+Spring Cloud Alibaba+Redis+Rabbitmq+ElasticSearch进行开发。采用Docker进行部署。
 
 微服务方面选取的具体组件如下：
 
@@ -45,18 +45,18 @@ UI:https://www.figma.com/file/Y4OJRtIMkpFlonuqF8EFpX/%E5%96%B5%E5%90%AC%EF%BC%88
 
 ### 优化性能方面
 
-1.排行榜功能使用Spring Task定时任务实现，并且采用了redis进行优化。
-![202401031857681](https://github.com/flying-pig-z/CloudMusic/assets/117554874/a217bd6b-0004-4d2f-94c4-4f52eb5931a1)
+1.排行榜功能使用XXX-JOB定时任务实现，并且采用了redis进行优化。
+![image-20240509125127647](C:/Users/86138/AppData/Roaming/Typora/typora-user-images/image-20240509125127647.png)
 
 2.业务逻辑严密，比如对上传文件的格式进行检查，避免重复的点赞和收藏。
 
-3.redis优化用户信息查询
+3.redis优化用户信息和音乐信息查询
 
 ![image](https://github.com/flying-pig-z/CloudMusic/assets/117554874/3ba2601e-b6ea-45b7-a473-467fc1e4b6ca)
 
-
 4.redis优化点赞
 ![whiteboard_exported_image (2)](https://github.com/flying-pig-z/CloudMusic/assets/117554874/66a57721-56c0-45a7-910d-8163d2d63595)
+
 > 设计思路：<br>
 > 【1】最终一致性：一般一致性采用的是Cache Aside Pattern，先更新数据库再删除缓存，但是的话获取某个音乐的点赞集合到redis中是个耗时的操作。在加上更新的频繁，所以不能采用删除缓存。<br>
 > 那要不就先更新数据库再更新缓存，要不就先更新缓存再更新数据库。<br>
@@ -77,5 +77,5 @@ UI:https://www.figma.com/file/Y4OJRtIMkpFlonuqF8EFpX/%E5%96%B5%E5%90%AC%EF%BC%88
 
 ## 代办
 
-xxx-job优化大文件上传
+实现大文件分片上传
 

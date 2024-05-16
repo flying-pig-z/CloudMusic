@@ -1,15 +1,16 @@
 package com.flyingpig.cloudmusic.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.flyingpig.cloudmusic.dataobject.dto.*;
 import com.flyingpig.cloudmusic.dataobject.entity.Collection;
 import com.flyingpig.cloudmusic.dataobject.entity.Music;
-import com.flyingpig.cloudmusic.dataobject.es.MusicDoc;
 import com.flyingpig.cloudmusic.mapper.CollectionMapper;
 import com.flyingpig.cloudmusic.mapper.MusicMapper;
 import com.flyingpig.cloudmusic.service.MusicService;
 import com.flyingpig.cloudmusic.cache.LikeCache;
 import com.flyingpig.cloudmusic.util.ElasticSearchUtil;
+import com.flyingpig.cloudmusic.util.MyStringRedisTemplate;
 import com.flyingpig.cloudmusic.util.UserContext;
 import com.flyingpig.feign.clients.UserClients;
 import com.flyingpig.feign.dataobject.dto.UserInfo;
@@ -24,8 +25,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-import static com.flyingpig.cloudmusic.constant.RedisConstants.MUSIC_RANKLIST_KEY;
+import static com.flyingpig.cloudmusic.constant.RedisConstants.*;
 
 /**
  * @author flyingpig
@@ -33,15 +35,18 @@ import static com.flyingpig.cloudmusic.constant.RedisConstants.MUSIC_RANKLIST_KE
 @Slf4j
 @Service
 @Transactional(rollbackFor = {Exception.class})
-public class MusicServiceImpl implements MusicService {
+public class MusicServiceImpl extends ServiceImpl<MusicMapper, Music> implements MusicService {
     @Autowired
-    private MusicMapper musicMapper;
+    MusicMapper musicMapper;
     @Autowired
-    private CollectionMapper collectionMapper;
+    CollectionMapper collectionMapper;
     @Autowired
-    private UserClients userClients;
+    UserClients userClients;
     @Autowired
-    private RedisTemplate redisTemplate;
+    RedisTemplate redisTemplate;
+
+    @Autowired
+    MyStringRedisTemplate myStringRedisTemplate;
 
     @Autowired
     LikeCache likeCache;
@@ -52,7 +57,7 @@ public class MusicServiceImpl implements MusicService {
 
     @Override
     public MusicInfo selectMusicInfoByUserIdAndMusicId(Long userId, Long musicId) {
-        Music music = musicMapper.selectById(musicId);
+        Music music = myStringRedisTemplate.queryWithPassThrough(MUSIC_INFO_KEY, musicId, Music.class, this::getById, MUSIC_INFO_TTL, TimeUnit.DAYS);
         MusicInfo result = new MusicInfo();
         BeanUtils.copyProperties(music, result); // 将 music 对象属性值复制到 result 对象上
         result.setLikeOrNot(likeCache.judgeLikeOrNotByMusicIdAndUserId(musicId, userId));
@@ -74,7 +79,7 @@ public class MusicServiceImpl implements MusicService {
 
     @Override
     public MusicDetail selectMusicDetailByMusicId(Long musicId) {
-        Music music = musicMapper.selectById(musicId);
+        Music music = myStringRedisTemplate.queryWithPassThrough(MUSIC_INFO_KEY, musicId, Music.class, this::getById, MUSIC_INFO_TTL, TimeUnit.DAYS);
         MusicDetail result = new MusicDetail();
         BeanUtils.copyProperties(music, result); // 将 music 对象属性值复制到 result 对象上
         UserInfo uploadUser = userClients.selectUserInfoByUserId(music.getUploadUser());
@@ -89,8 +94,10 @@ public class MusicServiceImpl implements MusicService {
 
     @Override
     public void deleteMusicByIdAndUserId(Long musicId, Long userId) {
-        if (musicMapper.selectById(musicId).getUploadUser().equals(userId)) {
+        if (myStringRedisTemplate.queryWithPassThrough(MUSIC_INFO_KEY, musicId, Music.class, this::getById, MUSIC_INFO_TTL, TimeUnit.DAYS)
+                .getUploadUser().equals(userId)) {
             musicMapper.deleteById(musicId);
+            myStringRedisTemplate.delete(MUSIC_INFO_KEY+musicId);
         }
     }
 
@@ -111,6 +118,7 @@ public class MusicServiceImpl implements MusicService {
     @Override
     public void deleteMusicById(Long musicId) {
         musicMapper.deleteById(musicId);
+        myStringRedisTemplate.delete(MUSIC_INFO_KEY+musicId);
     }
 
 

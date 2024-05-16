@@ -1,6 +1,7 @@
 package com.flyingpig.cloudmusic.controller;
 
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.flyingpig.cloudmusic.constant.StatusCode;
 import com.flyingpig.cloudmusic.dataobject.entity.Like;
 import com.flyingpig.cloudmusic.result.Result;
 import com.flyingpig.cloudmusic.service.LikeService;
@@ -30,7 +31,7 @@ public class LikeController {
         like.setUserId(UserContext.getUser().getUserId());
         boolean judge = likeService.likeMusic(like);
         if (!judge) {
-            return Result.error(500, "音乐不存在");
+            return Result.error(StatusCode.SERVERERROR, "音乐不存在");
         }
         return Result.success();
     }

@@ -1,4 +1,4 @@
-package com.flyingpig.cloudmusic.util;
+package com.flyingpig.cloudmusic.constant;
 
 public class RabbitMQConstants {
     public static final String MUSIC_UPLOAD_EXCHANGE_NAME = "music_upload_exchange";

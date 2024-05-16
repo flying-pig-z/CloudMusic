@@ -6,7 +6,7 @@ import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import static com.flyingpig.cloudmusic.util.RabbitMQConstants.*;
+import static com.flyingpig.cloudmusic.constant.RabbitMQConstants.*;
 
 
 @Configuration

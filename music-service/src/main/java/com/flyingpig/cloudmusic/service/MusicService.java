@@ -1,5 +1,6 @@
 package com.flyingpig.cloudmusic.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.flyingpig.cloudmusic.dataobject.dto.*;
 import com.flyingpig.cloudmusic.dataobject.entity.Music;
 import com.flyingpig.cloudmusic.dataobject.es.MusicDoc;
@@ -12,7 +13,7 @@ import java.util.List;
  * @author flyingpig
  */
 @Service
-public interface MusicService {
+public interface MusicService extends IService<Music> {
 
     MusicInfo selectMusicInfoByUserIdAndMusicId(Long userId, Long musicId);
 

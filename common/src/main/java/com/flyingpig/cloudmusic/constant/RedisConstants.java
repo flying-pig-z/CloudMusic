@@ -28,5 +28,13 @@ public class RedisConstants {
 
     public static final String DISLIKE_LOCK_KEY = "lock:dislike:";
 
+    public static final String MUSIC_INFO_KEY="music:like-num:";
+
+    public static final Long MUSIC_INFO_TTL=30L;
+
+    public static final Long CACHE_NULL_TTL=30L;
+
+
+
 
 }

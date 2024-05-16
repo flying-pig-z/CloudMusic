@@ -3,6 +3,7 @@ package com.flyingpig.cloudmusic.exception;
 
 import com.flyingpig.cloudmusic.constant.StatusCode;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -41,6 +42,15 @@ public class GlobalExceptionHandler {
     public Result httpRequestMethodNotSupportedExceptionHandler(Exception e){
         log.error("请求方法错误");
         return Result.error(StatusCode.METHODERROR,"请求方法错误");
+    }
+
+    /**
+     * Redis没连接上--500
+     */
+    @ExceptionHandler(RedisConnectionFailureException.class)
+    public Result edisConnectionFailureExceptionHandler(RedisConnectionFailureException e) {
+        log.error("redis连接错误啦啦啦啦啦啦");
+        return Result.error(StatusCode.SERVERERROR,"redis连接错误啦啦啦啦啦啦");
     }
 
 

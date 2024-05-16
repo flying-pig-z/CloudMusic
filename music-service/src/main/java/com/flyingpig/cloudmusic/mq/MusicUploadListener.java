@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-import static com.flyingpig.cloudmusic.util.RabbitMQConstants.MUSIC_UPLOAD_QUEUE_NAME1;
-import static com.flyingpig.cloudmusic.util.RabbitMQConstants.MUSIC_UPLOAD_QUEUE_NAME2;
+import static com.flyingpig.cloudmusic.constant.RabbitMQConstants.MUSIC_UPLOAD_QUEUE_NAME1;
+import static com.flyingpig.cloudmusic.constant.RabbitMQConstants.MUSIC_UPLOAD_QUEUE_NAME2;
 
 @Component
 @Slf4j

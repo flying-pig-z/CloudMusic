@@ -5,7 +5,6 @@ import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.flyingpig.cloudmusic.aop.BeforeAuthorize;
 import com.flyingpig.cloudmusic.dataobject.dto.*;
 import com.flyingpig.cloudmusic.dataobject.entity.Music;
-import com.flyingpig.cloudmusic.dataobject.es.MusicDoc;
 import com.flyingpig.cloudmusic.dataobject.message.MusicUploadMessage;
 import com.flyingpig.cloudmusic.result.Result;
 import com.flyingpig.cloudmusic.service.MusicService;
@@ -23,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
-import static com.flyingpig.cloudmusic.util.RabbitMQConstants.MUSIC_UPLOAD_EXCHANGE_NAME;
+import static com.flyingpig.cloudmusic.constant.RabbitMQConstants.MUSIC_UPLOAD_EXCHANGE_NAME;
 
 
 @Slf4j

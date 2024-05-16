@@ -10,5 +10,5 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @FeignClient(value = "music-service",fallbackFactory = MusicClientFallbackFactory.class)
 public interface MusicClients {
     @GetMapping("/musics/{musicId}/detail")
-    MusicDetail selectMusicDetailById(@PathVariable Long musicId);
+    MusicDetail selectMusicDetailById(@PathVariable("musicId") Long musicId);
 }
