@@ -6,7 +6,7 @@ import com.flyingpig.cloudmusic.dataobject.entity.User;
 import com.flyingpig.cloudmusic.mapper.UserMapper;
 import com.flyingpig.cloudmusic.result.Result;
 import com.flyingpig.cloudmusic.service.UserService;
-import com.flyingpig.cloudmusic.util.MyStringRedisTemplate;
+import com.flyingpig.cloudmusic.util.cache.MyStringRedisTemplate;
 import com.flyingpig.feign.dataobject.dto.UserInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -82,48 +82,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserInfo selectUserInfoByUserId(Long userId) {
-        String key = USER_INFO_KEY + userId;
-        //1.从redis查询用户信息缓存，并判断缓存是否存在
-        String userInfoJson = myStringRedisTemplate.get(key);
-        if (userInfoJson != null && !userInfoJson.equals("")) {
-            //缓存存在且不为空对象，直接返回
-            return JSONUtil.toBean(userInfoJson, UserInfo.class);
-        } else if (userInfoJson != null) {
-            //缓存为空对象，返回空对象给控制层
-            return null;
-        }
-        //2.缓存不存在，根据id查询数据库
-        //互斥锁防止缓存击穿
-        String lockKey = "lock:user-info:" + userId;
-
-        try {
-            boolean isLock = myStringRedisTemplate.tryLock(lockKey);
-            // 判断互斥锁否获取成功
-            if (!isLock) {
-                //互斥锁失败，则休眠重试
-                Thread.sleep(50);
-                return selectUserInfoByUserId(userId);
-            }
+        return myStringRedisTemplate.safeGetWithLock(USER_INFO_KEY + userId, UserInfo.class, () -> {
             UserInfo result = new UserInfo();
             User user = userMapper.selectById(userId);
             if (user == null) {
-                //数据库不存在，返回空对象，并将空对象写入缓存并返回
-                //将空对象写入缓存，防止缓存穿透
-                myStringRedisTemplate.set(key, "", USER_INFO_TTL, TimeUnit.DAYS);
                 return null;
-            } else {
-                //数据库存在则写入内存并返回
-                BeanUtils.copyProperties(user, result);
-                myStringRedisTemplate.set(key, JSONUtil.toJsonStr(result), USER_INFO_TTL, TimeUnit.DAYS);
-                return result;
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        } finally {
-            //释放互斥锁
-            myStringRedisTemplate.unlock(lockKey);
-        }
-
+            BeanUtils.copyProperties(user, result);
+            return result;
+        }, USER_INFO_TTL, TimeUnit.DAYS);
     }
 
     @Override

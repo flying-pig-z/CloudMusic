@@ -10,7 +10,7 @@ import com.flyingpig.cloudmusic.mapper.MusicMapper;
 import com.flyingpig.cloudmusic.service.MusicService;
 import com.flyingpig.cloudmusic.cache.LikeCache;
 import com.flyingpig.cloudmusic.util.ElasticSearchUtil;
-import com.flyingpig.cloudmusic.util.MyStringRedisTemplate;
+import com.flyingpig.cloudmusic.util.cache.MyStringRedisTemplate;
 import com.flyingpig.cloudmusic.util.UserContext;
 import com.flyingpig.feign.clients.UserClients;
 import com.flyingpig.feign.dataobject.dto.UserInfo;
@@ -22,7 +22,6 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -57,7 +56,9 @@ public class MusicServiceImpl extends ServiceImpl<MusicMapper, Music> implements
 
     @Override
     public MusicInfo selectMusicInfoByUserIdAndMusicId(Long userId, Long musicId) {
-        Music music = myStringRedisTemplate.queryWithPassThrough(MUSIC_INFO_KEY, musicId, Music.class, this::getById, MUSIC_INFO_TTL, TimeUnit.DAYS);
+        Music music = myStringRedisTemplate.safeGetWithLock(MUSIC_INFO_KEY+musicId, Music.class, () -> {
+            return musicMapper.selectById(musicId);
+        }, MUSIC_INFO_TTL, TimeUnit.DAYS);
         MusicInfo result = new MusicInfo();
         BeanUtils.copyProperties(music, result); // 将 music 对象属性值复制到 result 对象上
         result.setLikeOrNot(likeCache.judgeLikeOrNotByMusicIdAndUserId(musicId, userId));
