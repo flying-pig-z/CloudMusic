@@ -64,9 +64,9 @@ public class MyStringRedisTemplate {
         // 4.实现缓存重建
         // 4.1.获取互斥锁
         String lockKey = "lock:" + key;
-        T t = null;
+        T t;
         try {
-            boolean isLock = tryLock(lockKey);
+            boolean isLock = tryLock(lockKey, 10);
             // 4.2.判断是否获取成功
             if (!isLock) {
                 // 4.3.获取锁失败，休眠并重试
@@ -105,13 +105,18 @@ public class MyStringRedisTemplate {
 
 
 
-    private boolean tryLock(String key) {
-        Boolean flag = stringRedisTemplate.opsForValue().setIfAbsent(key, "1", 10, TimeUnit.SECONDS);
-        return BooleanUtil.isTrue(flag);
+    public boolean tryLock(String lockKey, long timeoutSec) {
+        // 获取线程标示
+        String threadId = Thread.currentThread().getId()+"";
+        // 获取锁并判断是否成功
+        // setIfAbsent方法是原子的，只有一个线程能够获取到锁，对应redis的setNx命令
+        return Boolean.TRUE.equals(
+                stringRedisTemplate.opsForValue().setIfAbsent(lockKey, threadId, timeoutSec, TimeUnit.SECONDS));
     }
 
-    private void unlock(String key) {
-        stringRedisTemplate.delete(key);
+    public void unlock(String lockKey) {
+        //通过del删除锁
+        stringRedisTemplate.delete(lockKey);
     }
 
 

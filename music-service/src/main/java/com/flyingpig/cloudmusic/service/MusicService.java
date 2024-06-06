@@ -21,8 +21,6 @@ public interface MusicService extends IService<Music> {
 
     MusicDetail selectMusicDetailByMusicId(Long musicId);
 
-    void addMusic(Music music);
-
     void deleteMusicByIdAndUserId(Long musicId, Long userId);
 
     List<UploadMusicInfo> selectUploadMusics();

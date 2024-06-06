@@ -56,7 +56,7 @@ public class MusicServiceImpl extends ServiceImpl<MusicMapper, Music> implements
 
     @Override
     public MusicInfo selectMusicInfoByUserIdAndMusicId(Long userId, Long musicId) {
-        Music music = myStringRedisTemplate.safeGetWithLock(MUSIC_INFO_KEY+musicId, Music.class, () -> {
+        Music music = myStringRedisTemplate.safeGetWithLock(MUSIC_INFO_KEY + musicId, Music.class, () -> {
             return musicMapper.selectById(musicId);
         }, MUSIC_INFO_TTL, TimeUnit.DAYS);
         MusicInfo result = new MusicInfo();
@@ -80,7 +80,9 @@ public class MusicServiceImpl extends ServiceImpl<MusicMapper, Music> implements
 
     @Override
     public MusicDetail selectMusicDetailByMusicId(Long musicId) {
-        Music music = myStringRedisTemplate.queryWithPassThrough(MUSIC_INFO_KEY, musicId, Music.class, this::getById, MUSIC_INFO_TTL, TimeUnit.DAYS);
+        Music music = myStringRedisTemplate.safeGetWithLock(MUSIC_INFO_KEY+musicId, Music.class, ()->{
+            return musicMapper.selectById(musicId);
+        }, MUSIC_INFO_TTL, TimeUnit.DAYS);
         MusicDetail result = new MusicDetail();
         BeanUtils.copyProperties(music, result); // 将 music 对象属性值复制到 result 对象上
         UserInfo uploadUser = userClients.selectUserInfoByUserId(music.getUploadUser());
@@ -88,17 +90,16 @@ public class MusicServiceImpl extends ServiceImpl<MusicMapper, Music> implements
         return result;
     }
 
-    @Override
-    public void addMusic(Music music) {
-        musicMapper.insert(music);
-    }
+
 
     @Override
     public void deleteMusicByIdAndUserId(Long musicId, Long userId) {
-        if (myStringRedisTemplate.queryWithPassThrough(MUSIC_INFO_KEY, musicId, Music.class, this::getById, MUSIC_INFO_TTL, TimeUnit.DAYS)
+        if (myStringRedisTemplate.safeGetWithLock(MUSIC_INFO_KEY + musicId, Music.class, () -> {
+                    return musicMapper.selectById(musicId);
+                }, MUSIC_INFO_TTL, TimeUnit.DAYS)
                 .getUploadUser().equals(userId)) {
             musicMapper.deleteById(musicId);
-            myStringRedisTemplate.delete(MUSIC_INFO_KEY+musicId);
+            myStringRedisTemplate.delete(MUSIC_INFO_KEY + musicId);
         }
     }
 
@@ -119,9 +120,8 @@ public class MusicServiceImpl extends ServiceImpl<MusicMapper, Music> implements
     @Override
     public void deleteMusicById(Long musicId) {
         musicMapper.deleteById(musicId);
-        myStringRedisTemplate.delete(MUSIC_INFO_KEY+musicId);
+        myStringRedisTemplate.delete(MUSIC_INFO_KEY + musicId);
     }
-
 
 
 }

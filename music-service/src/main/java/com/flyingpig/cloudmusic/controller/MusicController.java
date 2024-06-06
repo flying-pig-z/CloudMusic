@@ -9,6 +9,7 @@ import com.flyingpig.cloudmusic.dataobject.message.MusicUploadMessage;
 import com.flyingpig.cloudmusic.result.Result;
 import com.flyingpig.cloudmusic.service.MusicService;
 import com.flyingpig.cloudmusic.util.AliOSSUtils;
+import com.flyingpig.cloudmusic.util.ElasticSearchUtil;
 import com.flyingpig.cloudmusic.util.MultipartFileUtil;
 import com.flyingpig.cloudmusic.util.UserContext;
 import io.swagger.annotations.Api;
@@ -36,6 +37,8 @@ public class MusicController {
     AliOSSUtils aliOSSUtils;
     @Autowired
     RabbitTemplate rabbitTemplate;
+
+
 
 
     @GetMapping("/{musicId}")
