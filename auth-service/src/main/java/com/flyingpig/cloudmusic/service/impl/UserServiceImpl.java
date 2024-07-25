@@ -11,13 +11,11 @@ import com.flyingpig.feign.dataobject.dto.UserInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import cn.hutool.json.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import com.flyingpig.cloudmusic.util.JwtUtil;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;

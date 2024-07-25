@@ -13,6 +13,10 @@ spring:
     url: jdbc:mysql://111.229.173.12:3306/cloudmusic
     username: root
     password: "@Aa123456"
+  redis:
+    database: 0
+    host: localhost
+    port: 6379
   cloud:
     nacos:
       server-addr: http://localhost:8848

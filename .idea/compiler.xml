@@ -17,6 +17,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="eureka-server" target="11" />
+      <module name="redis-utils-spring-boot-starter" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -24,8 +25,8 @@
       <module name="auth-service" options="-parameters" />
       <module name="common" options="-parameters" />
       <module name="eureka-server" options="-parameters" />
-      <module name="feign-api" options="" />
-      <module name="gateway" options="" />
+      <module name="feign-api" options="-parameters" />
+      <module name="gateway" options="-parameters" />
       <module name="music-service" options="-parameters" />
       <module name="songlist-service" options="-parameters" />
     </option>

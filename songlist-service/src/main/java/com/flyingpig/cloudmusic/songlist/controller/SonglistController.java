@@ -51,7 +51,7 @@ public class SonglistController {
 
     @ApiOperation("管理员查看用户所有歌单")
     @BeforeAuthorize(role = "admin")
-    @GetMapping
+    @GetMapping("/admin")
     public Result adminListSonglistByUserId(Long userId) {
         List<SonglistInfo> songlistInfoList = songlistService.listSonglistByUserId(userId);
         return Result.success(songlistInfoList);

@@ -1,15 +1,10 @@
 package com.flyingpig.cloudmusic.util.cache;
 
-import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import static com.flyingpig.cloudmusic.constant.RedisConstants.CACHE_NULL_TTL;
@@ -20,7 +15,6 @@ import static com.flyingpig.cloudmusic.constant.RedisConstants.CACHE_NULL_TTL;
 public class MyStringRedisTemplate {
     private final StringRedisTemplate stringRedisTemplate;
 
-    private static final ExecutorService CACHE_REBUILD_EXECUTOR = Executors.newFixedThreadPool(10);
 
     public MyStringRedisTemplate(StringRedisTemplate stringRedisTemplate) {
         this.stringRedisTemplate = stringRedisTemplate;

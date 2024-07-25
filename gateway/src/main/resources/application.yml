@@ -5,7 +5,7 @@ spring:
     name: gateway # 服务名称
   cloud:
     nacos:
-      server-addr: http://47.122.56.65:8848 # nacos地址
+      server-addr: http://localhost:8848 # nacos地址
     gateway:
       #从gateway路由的所有请求都会带上origin头，值为gateway。
       #而从其它地方到达微服务的请求则没有这个头。
