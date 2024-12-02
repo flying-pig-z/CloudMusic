@@ -1,0 +1,8 @@
+nohup java -jar gateway-1.0-SNAPSHOT.jar > gateway.log 2>&1 &
+nohup java -jar auth-service-1.0-SNAPSHOT.jar > auth-service.log 2>&1 &
+nohup java -jar music-related-service-1.0-SNAPSHOT.jar > music-related-service.log 2>&1 &
+nohup java -jar music-service-1.0-SNAPSHOT.jar > music-service.log 2>&1 &
+nohup java -jar songlist-service-1.0-SNAPSHOT.jar > songlist-service.log 2>&1 &
+
+# 除了上面服务的启动，还需要安装基础部件：mysql redis rabbitmq nacos
+# 可选项：es xxl-job

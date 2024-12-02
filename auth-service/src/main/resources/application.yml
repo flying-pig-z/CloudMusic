@@ -1,6 +1,8 @@
 server:
-  port: 9091
+  port: 9094
 spring:
+  main:
+    allow-bean-definition-overriding: true
   servlet:
     multipart:
       max-file-size: 10MB
@@ -8,25 +10,25 @@ spring:
   application:
     name: auth-service # 服务名称
   datasource:
+    url: jdbc:mysql://localhost:3306/cloudmusic
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://111.229.173.12:3306/cloudmusic
     username: root
     password: '@Aa123456'
   cloud:
     nacos:
-      server-addr: http://localhost:8848
+      server-addr: http://common-nacos-dev.magestack.cn:8848
       discovery:
         cluster-name: FJ # 集群名称
-        ip: localhost # 注册到nacos的ip与端口
-        port: 9091
+        ip: 8.210.250.29 # 注册到nacos的ip与端口
+        port: 9094
   redis:
-      host: localhost
-      port: 6379
-      database: 0
+    host: localhost
+    port: 6379
+    database: 0
   mail:
     host: smtp.qq.com
     username: flying_pig_z@qq.com
-    password:
+    password: 
     default-encoding: UTF-8
     port: 465
     properties:
@@ -36,7 +38,6 @@ spring:
             class: javax.net.ssl.SSLSocketFactory
           ssl:
             enable: true
-        debug: true
 
 
 #??sql
@@ -62,4 +63,3 @@ feign:
     max-connections-per-route: 50 # 每个路径的最大连接数
   sentinel:
     enabled: true
-

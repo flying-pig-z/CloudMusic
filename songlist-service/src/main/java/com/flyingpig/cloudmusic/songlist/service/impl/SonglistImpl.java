@@ -3,7 +3,9 @@ package com.flyingpig.cloudmusic.songlist.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.flyingpig.cloudmusic.songlist.dataobject.dto.SonglistInfo;
 import com.flyingpig.cloudmusic.songlist.dataobject.entity.Songlist;
+import com.flyingpig.cloudmusic.songlist.dataobject.entity.SonglistMusic;
 import com.flyingpig.cloudmusic.songlist.mapper.SonglistMapper;
+import com.flyingpig.cloudmusic.songlist.mapper.SonglistMusicMapper;
 import com.flyingpig.cloudmusic.songlist.service.SonglistService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -22,21 +24,27 @@ public class SonglistImpl implements SonglistService {
     @Autowired
     private SonglistMapper songlistMapper;
 
+    @Autowired
+    private SonglistMusicMapper songlistMusicMapper;
+
 
     @Override
-    public void addSonglist(Songlist songlist) {
+    public Long addSonglist(Songlist songlist) {
         songlistMapper.insert(songlist);
+        return songlist.getId();
     }
 
     @Override
     public List<SonglistInfo> listSonglistByUserId(Long userId) {
-        LambdaQueryWrapper<Songlist> songlistLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        songlistLambdaQueryWrapper.eq(Songlist::getUserId, userId);
-        List<Songlist> songlistList = songlistMapper.selectList(songlistLambdaQueryWrapper);
+        List<Songlist> songlistList = songlistMapper.selectList(
+                new LambdaQueryWrapper<Songlist>().eq(Songlist::getUserId, userId));
         List<SonglistInfo> songlistInfoList = new ArrayList<>();
         for (Songlist songlist : songlistList) {
             SonglistInfo songlistInfo = new SonglistInfo();
             BeanUtils.copyProperties(songlist, songlistInfo);
+            songlistInfo.setMusicCount(songlistMusicMapper.selectCount(
+                    new LambdaQueryWrapper<SonglistMusic>().eq(SonglistMusic::getSonglistId, songlist.getId())
+            ));
             songlistInfoList.add(songlistInfo);
         }
         return songlistInfoList;

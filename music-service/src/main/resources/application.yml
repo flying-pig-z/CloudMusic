@@ -1,6 +1,6 @@
 #运行端口
 server:
-  port: 9090
+  port: 9096
   servlet:
     encoding:
       charset: UTF-8
@@ -18,16 +18,15 @@ spring:
     username: root
     password: "@Aa123456"
   redis:
-    database: 0
     host: localhost
     port: 6379
   cloud:
     nacos:
-      server-addr: http://localhost:8848
+      server-addr: http://common-nacos-dev.magestack.cn:8848
       discovery:
         cluster-name: FJ # 集群名称
-        ip: localhost # 注册到nacos的ip与端口
-        port: 9090
+        ip: 8.210.250.29 # 注册到nacos的ip与端口
+        port: 9096
     sentinel:
       transport:
         dashboard: localhost:8090
@@ -40,7 +39,6 @@ music-service:
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
-
 #swagger配置
 swagger:
   title: "音乐模块"

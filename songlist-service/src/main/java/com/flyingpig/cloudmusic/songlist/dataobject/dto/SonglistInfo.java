@@ -11,4 +11,6 @@ public class SonglistInfo {
     //雪花算法生成
     private Long id;
     private String name;
+
+    private Integer musicCount;
 }

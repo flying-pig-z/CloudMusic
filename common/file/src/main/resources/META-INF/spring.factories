@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.flyingpig.cloudmusic.file.config.AutoFileConfiguration

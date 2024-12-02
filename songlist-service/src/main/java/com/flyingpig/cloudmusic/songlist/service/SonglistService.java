@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public interface SonglistService {
 
-    void addSonglist(Songlist songlist);
+    Long addSonglist(Songlist songlist);
 
     List<SonglistInfo> listSonglistByUserId(Long userId);
 

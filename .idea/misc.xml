@@ -13,6 +13,13 @@
         <option value="$PROJECT_DIR$/memorandum-note/pom.xml" />
         <option value="$PROJECT_DIR$/gateway/pom.xml" />
         <option value="$PROJECT_DIR$/feign-api/pom.xml" />
+        <option value="$PROJECT_DIR$/common/web/pom.xml" />
+        <option value="$PROJECT_DIR$/common/oss/pom.xml" />
+        <option value="$PROJECT_DIR$/common/security/pom.xml" />
+        <option value="$PROJECT_DIR$/common/sentinel/pom.xml" />
+        <option value="$PROJECT_DIR$/common/file/pom.xml" />
+        <option value="$PROJECT_DIR$/common/cache/pom.xml" />
+        <option value="$PROJECT_DIR$/common/idempotent/pom.xml" />
       </list>
     </option>
   </component>

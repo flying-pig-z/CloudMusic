@@ -7,12 +7,18 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="music-service" />
+        <module name="idempotent" />
+        <module name="sentinel" />
         <module name="auth-service" />
-        <module name="common" />
+        <module name="cache" />
+        <module name="security" />
+        <module name="file" />
+        <module name="web" />
+        <module name="music-service" />
+        <module name="music-related-service" />
+        <module name="songlist-service" />
         <module name="gateway" />
         <module name="feign-api" />
-        <module name="songlist-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -23,12 +29,19 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="auth-service" options="-parameters" />
-      <module name="common" options="-parameters" />
+      <module name="cache" options="-parameters" />
+      <module name="common" options="" />
       <module name="eureka-server" options="-parameters" />
       <module name="feign-api" options="-parameters" />
+      <module name="file" options="-parameters" />
       <module name="gateway" options="-parameters" />
+      <module name="idempotent" options="-parameters" />
+      <module name="music-related-service" options="-parameters" />
       <module name="music-service" options="-parameters" />
+      <module name="security" options="-parameters" />
+      <module name="sentinel" options="-parameters" />
       <module name="songlist-service" options="-parameters" />
+      <module name="web" options="-parameters" />
     </option>
   </component>
 </project>
