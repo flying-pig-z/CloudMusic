@@ -2,12 +2,5 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/common/cache" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/common/file" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/common/idempotent" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/common/security" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/common/sentinel" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/common/web" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/music-related-service" vcs="Git" />
   </component>
 </project>

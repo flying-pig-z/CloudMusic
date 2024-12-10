@@ -87,7 +87,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
                 .request(builder -> builder.header("userId", finalUserId))
                 .request(builder -> builder.header("userRole", userRole))
                 .build();
-        log.info("userId:{} requestUrl:{}", finalUserId, requestUrl);
+        log.info("用户 {} 访问接口 {}", finalUserId, requestUrl);
         //6.检查通过放行
         return chain.filter(swe);
     }

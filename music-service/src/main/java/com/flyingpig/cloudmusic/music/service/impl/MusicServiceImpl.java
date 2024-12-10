@@ -156,5 +156,12 @@ public class MusicServiceImpl extends ServiceImpl<MusicMapper, Music> implements
         return musicInfos;
     }
 
+    @Override
+    public Integer selectUploadMusicNum() {
+        LambdaQueryWrapper<Music> musicLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        musicLambdaQueryWrapper.eq(Music::getUploadUser, UserContext.getUser().getUserId());
+        return musicMapper.selectCount(musicLambdaQueryWrapper);
+    }
+
 
 }

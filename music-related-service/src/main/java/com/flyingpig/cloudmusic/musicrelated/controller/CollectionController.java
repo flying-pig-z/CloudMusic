@@ -4,7 +4,6 @@ import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.flyingpig.cloudmusic.musicrelated.service.CollectionService;
 import com.flyingpig.cloudmusic.security.util.UserContext;
 import com.flyingpig.cloudmusic.web.Result;
-import com.flyingpig.feign.dataobject.dto.MusicDetail;
 import com.flyingpig.feign.dataobject.dto.UserCollectInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import com.flyingpig.cloudmusic.musicrelated.dataobject.entity.Collection;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -41,10 +39,17 @@ public class CollectionController {
     }
 
     @GetMapping("/user-collection-list")
-    @ApiOperation("获取用户点赞集合")
-    public Result getCollectionListByUserId() {
-        return Result.success(collectionService.listCollectionByUserId());
+    @ApiOperation("获取用户收藏集合")
+    public Result listUserCollection() {
+        return Result.success(collectionService.listUserCollection());
     }
+
+    @GetMapping("/user-collection-num")
+    @ApiOperation("获取用户收藏数量")
+    public Result getUserCollectionNum() {
+        return Result.success(collectionService.getUserCollectionNum());
+    }
+
 
     @GetMapping("/user-collection-info")
     @ApiOperation("是否点赞[外部调用]")

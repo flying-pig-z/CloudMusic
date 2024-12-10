@@ -35,9 +35,16 @@ public class LikeController {
 
     @GetMapping("/user-like-list")
     @ApiOperation("获取用户点赞集合")
-    public Result getLikeListByUserId() {
-        return Result.success(likeService.listLikeByUserId());
+    public Result listUserLike() {
+        return Result.success(likeService.listUserLike());
     }
+
+    @GetMapping("/user-like-num")
+    @ApiOperation("获取用户点赞数量")
+    public Result getUserLikeNum() {
+        return Result.success(likeService.getUserLikeNum());
+    }
+
 
     @GetMapping("/user-like-info")
     @ApiOperation("是否点赞[外部调用]")

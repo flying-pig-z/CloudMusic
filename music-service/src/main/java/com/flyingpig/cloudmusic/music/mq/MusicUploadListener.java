@@ -16,11 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.flyingpig.cloudmusic.music.constant.MQConstants.MUSIC_UPLOAD_QUEUE_NAME1;
-import static com.flyingpig.cloudmusic.music.constant.MQConstants.MUSIC_UPLOAD_QUEUE_NAME2;
 
 @Component
 @Slf4j
@@ -32,12 +30,7 @@ public class MusicUploadListener {
     AliOSSUtils aliOSSUtils;
 
     @RabbitListener(queues = MUSIC_UPLOAD_QUEUE_NAME1)
-    public void handleMusicUploadRequest1(MusicUploadMessage request) throws IOException {
-        processMusicUpload(request);
-    }
-
-    @RabbitListener(queues = MUSIC_UPLOAD_QUEUE_NAME2)
-    public void handleMusicUploadRequest2(MusicUploadMessage request) throws IOException {
+    public void handleMusicUploadRequest(MusicUploadMessage request) throws IOException {
         processMusicUpload(request);
     }
 

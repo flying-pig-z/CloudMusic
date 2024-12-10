@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
 
         //如果认证没通过，给出对应的提示
         if (Objects.isNull(authenticate)) {
-            throw new RuntimeException("登录失败");
+            throw new RuntimeException("账号或密码错误，请重新登录");
         }
 
         //如果认证通过了，使用userid生成一个jwt jwt存入ResponseResult返回
@@ -134,9 +134,8 @@ public class UserServiceImpl implements UserService {
             // 删除缓存，防止数据不一致
             myStringRedisTemplate.delete(RedisConstants.USER_INFO_KEY + userId);
         } catch (Exception e) {
-            log.error("修改头像异常{}", e.getMessage());
+            throw new RuntimeException("修改头像异常" + e.getMessage());
         }
-
     }
 
     @Override
@@ -150,7 +149,7 @@ public class UserServiceImpl implements UserService {
         // 验证码 邮件主题 邮件正文
         String verificationCode = EmailUtil.createVerificationCode();
         String subject = "【喵听】验证码";
-        String text = String.format("【喵听】验证码：%s，您正在申请注册飞猪聊天室账号" +
+        String text = String.format("【喵听】验证码：%s，您正在申请注册喵听账号" +
                 "（若非本人操作，请删除本邮件）", verificationCode);
 
         // 发送邮件

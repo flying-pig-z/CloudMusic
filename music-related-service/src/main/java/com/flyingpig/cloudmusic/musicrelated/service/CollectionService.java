@@ -17,5 +17,7 @@ public interface CollectionService {
 
     Long getCollectionNum(Collection collection);
 
-    List<MusicDetail> listCollectionByUserId();
+    List<MusicDetail> listUserCollection();
+
+    Integer getUserCollectionNum();
 }

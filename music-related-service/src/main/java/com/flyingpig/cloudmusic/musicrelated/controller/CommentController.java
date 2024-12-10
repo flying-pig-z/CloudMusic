@@ -34,7 +34,7 @@ public class CommentController {
     @ApiOperation("发表评论")
     public Result addComment(@RequestBody AddComment addComment) {
         if ("".equals(addComment.getContent()) || addComment.getContent() == null) {
-            return Result.error(StatusCode.SERVERERROR, "评论不能为空");
+            throw new RuntimeException("评论不能为空");
         }
         commentService.addComment(addComment);
         return Result.success();

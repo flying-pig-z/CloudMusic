@@ -13,12 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 public class UserInfoInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        // 访问uri
-        log.info("访问后端: {} {}", request.getMethod(), request.getRequestURI());
 
         // 1.获取请求头中的用户信息
         String userId = request.getHeader("userId");
         String role = request.getHeader("userRole");
+
+        log.info("用户 {} 访问接口: {} {}", userId, request.getMethod(), request.getRequestURI());
+
         // 2.判断是否为空
         if (StringUtil.isNotBlank(userId)) {
             // 不为空，保存到ThreadLocal

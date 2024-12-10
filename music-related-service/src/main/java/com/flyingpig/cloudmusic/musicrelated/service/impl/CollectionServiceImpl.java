@@ -57,7 +57,7 @@ public class CollectionServiceImpl implements CollectionService {
     }
 
     @Override
-    public List<MusicDetail> listCollectionByUserId() {
+    public List<MusicDetail> listUserCollection() {
         List<Collection> collections = collectionMapper.selectList(new LambdaQueryWrapper<Collection>()
                 .eq(Collection::getUserId, UserContext.getUser().getUserId()));
         List<MusicDetail> musicDetails = new ArrayList<>();
@@ -65,6 +65,12 @@ public class CollectionServiceImpl implements CollectionService {
             musicDetails.add(musicClients.selectMusicDetailById(collection.getMusicId()));
         }
         return musicDetails;
+    }
+
+    @Override
+    public Integer getUserCollectionNum() {
+        return collectionMapper.selectCount(new LambdaQueryWrapper<Collection>()
+                .eq(Collection::getUserId, UserContext.getUser().getUserId()));
     }
 
 

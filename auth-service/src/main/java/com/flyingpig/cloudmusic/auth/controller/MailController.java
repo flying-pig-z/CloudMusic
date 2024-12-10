@@ -34,7 +34,7 @@ public class MailController {
     public Result sendEmailVerificationCode(String email) {
         //检查email是否符合格式
         if (!EmailUtil.judgeEmailFormat(email)) {
-            return Result.error(StatusCode.SERVERERROR, "邮箱不符合格式");
+            throw new RuntimeException("邮箱不符合格式");
         }
         userService.sendVerificationCode(email);
         return Result.success("验证码已发送");
@@ -44,18 +44,17 @@ public class MailController {
     @PostMapping("/register")
     @ApiOperation("通过验证码完成注册")
     public Result emailRegister(@RequestBody EmailRegisterVO emailRegisterVO) {
-        System.out.println(emailRegisterVO.getEmail());
         String verificationCode = stringRedisTemplate.opsForValue().get(RedisConstants.EMAIL_VERIFYCODE_KEY + emailRegisterVO.getEmail());
-        System.out.println(verificationCode);
+        log.info("邮箱{}请求验证码{}",emailRegisterVO.getEmail(),verificationCode);
         if (verificationCode != null && verificationCode.equals(emailRegisterVO.getVerificationCode())) {
             // 添加用户
-            userService.addUser(new User()
+            userService.addUser(new User().setRole("user")
                     .setUsername(emailRegisterVO.getUsername())
                     .setPassword(passwordEncoder.encode(emailRegisterVO.getPassword()))
                     .setEmail(emailRegisterVO.getEmail()));
             return Result.success("添加成功,请联系管理员审核");
         } else {
-            return Result.error(StatusCode.SERVERERROR, "验证码验证错误");
+            throw new RuntimeException("验证码验证错误");
         }
 
     }

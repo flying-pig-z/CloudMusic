@@ -6,6 +6,7 @@ import com.flyingpig.cloudmusic.music.dataobject.dto.MusicInfo;
 import com.flyingpig.cloudmusic.music.dataobject.dto.MusicInfoInRankList;
 import com.flyingpig.cloudmusic.music.dataobject.dto.UploadMusicInfo;
 import com.flyingpig.cloudmusic.music.dataobject.entity.Music;
+import io.swagger.models.auth.In;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,4 +35,6 @@ public interface MusicService extends IService<Music> {
     Boolean incOrDecCollectionNum(Long musicId, String mode);
 
     List<MusicInfo> listRandomMusics(Integer num);
+
+    Integer selectUploadMusicNum();
 }

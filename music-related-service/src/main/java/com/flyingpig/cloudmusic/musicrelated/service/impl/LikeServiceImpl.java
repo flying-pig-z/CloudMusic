@@ -137,7 +137,7 @@ public class LikeServiceImpl implements LikeService {
     }
 
     @Override
-    public List<MusicDetail> listLikeByUserId() {
+    public List<MusicDetail> listUserLike() {
         // 判断缓存中是否存在用户的点赞集合
         if (Boolean.FALSE.equals(stringRedisTemplate.hasKey(USER_MUSICLIKESET_KEY + UserContext.getUser().getUserId()))) {
             // 同步数据库中的点赞数据到缓存
@@ -146,10 +146,27 @@ public class LikeServiceImpl implements LikeService {
         String userLikeSetKey = USER_MUSICLIKESET_KEY + UserContext.getUser().getUserId();
         Set<String> resultSet = stringRedisTemplate.opsForSet().members(userLikeSetKey);
         List<MusicDetail> musicDetails = new ArrayList<>();
-        for (String musicId : resultSet) {
-            musicDetails.add(musicClients.selectMusicDetailById(Long.parseLong(musicId)));
+        if (resultSet != null) {
+            for (String musicId : resultSet) {
+                musicDetails.add(musicClients.selectMusicDetailById(Long.parseLong(musicId)));
+            }
         }
         return musicDetails;
+    }
+
+    @Override
+    public Integer getUserLikeNum() {
+        // 判断缓存中是否存在用户的点赞集合
+        if (Boolean.FALSE.equals(stringRedisTemplate.hasKey(USER_MUSICLIKESET_KEY + UserContext.getUser().getUserId()))) {
+            // 同步数据库中的点赞数据到缓存
+            likeCache.likedataFromDbToRedis(UserContext.getUser().getUserId().toString());
+        }
+        String userLikeSetKey = USER_MUSICLIKESET_KEY + UserContext.getUser().getUserId();
+        Set<String> resultSet = stringRedisTemplate.opsForSet().members(userLikeSetKey);
+        if (resultSet == null) {
+            return 0;
+        }
+        return resultSet.size();
     }
 
 

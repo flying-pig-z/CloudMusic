@@ -31,39 +31,25 @@ public class AuthController {
     @PostMapping("/login")
     @ApiOperation("用户登录")
     public Result login(@RequestBody User user) {
-        try {
-            System.out.println(user);
-            return userService.login(user);
-        } catch (RedisConnectionFailureException e) {
-            return Result.error(StatusCode.SERVERERROR, "redis崩溃");
-        } catch (Exception e) {
-            System.out.println(e);
-            return Result.error(StatusCode.SERVERERROR, "账号或密码错误，请重新登录");
-        }
+        log.info("用户登录：{}", user);
+        return userService.login(user);
     }
 
     @PostMapping("/logout")
     @ApiOperation("用户登出")
     public Result logout(@RequestHeader String Authorization) {
-        String userId = JwtUtil.parseJwt(Authorization).getSubject();
-        return userService.logout(userId);
+        return userService.logout(JwtUtil.parseJwt(Authorization).getSubject());
     }
 
     @GetMapping("/whitelist")
     public boolean uuidIsInWhiteListOrNot(String userId, String uuid) {
-        try {
-            String redisValue = stringRedisTemplate.opsForValue().get(RedisConstants.USER_LOGIN_KEY + userId);
-            // 去掉引号和空格后再进行比较
-            if (redisValue != null) {
-                redisValue = redisValue.replace("\"", "").trim();
-            }
-            return Objects.equals(redisValue, uuid);
-        } catch (RedisConnectionFailureException e) {
-            log.error("redis崩溃啦啦啦啦啦");
+        String redisValue = stringRedisTemplate.opsForValue().get(RedisConstants.USER_LOGIN_KEY + userId);
+        // 去掉引号和空格后再进行比较
+        if (redisValue != null) {
+            redisValue = redisValue.replace("\"", "").trim();
         }
-        return true;
+        return Objects.equals(redisValue, uuid);
     }
-
 
 
 }

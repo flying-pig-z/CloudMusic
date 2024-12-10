@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -79,8 +80,8 @@ public class MusicController {
     public Result uploadMusic(@RequestHeader Long userId, @RequestParam @NotNull String name, @RequestParam @NotNull String introduce,
                               @RequestParam @NotNull String singerName, @RequestParam MultipartFile coverFile, @RequestParam MultipartFile musicFile) throws IOException {
         log.info("上传用户：{}，上传封面：{}, 上传音乐：{}", UserContext.getUser().getUserId(), coverFile.getOriginalFilename(), musicFile.getOriginalFilename());
-        if (!MultipartFileUtil.isMusicFile(musicFile) || !MultipartFileUtil.isImageFile(coverFile)) {
-            return Result.error(500, "文件类型错误");
+        if (!MultipartFileUtil.isImageFile(coverFile)) {
+            throw new RemoteException("文件类型错误");
         }
         // 异步审核，上传，保存音乐文件
         rabbitTemplate.convertAndSend(MUSIC_UPLOAD_EXCHANGE_NAME, "", new MusicUploadMessage(
@@ -102,10 +103,15 @@ public class MusicController {
     @GetMapping("/upload-music")
     @ApiOperation("查询自己上传的音乐")
     public Result selectUploadMusics() {
-        List<UploadMusicInfo> result = musicService.selectUploadMusics();
-        return Result.success(result);
+        return Result.success(musicService.selectUploadMusics());
     }
 
+
+    @GetMapping("/upload-music-num")
+    @ApiOperation("查询自己上传的音乐数量")
+    public Result selectUploadMusicNum() {
+        return Result.success(musicService.selectUploadMusicNum());
+    }
 
     @GetMapping("/{musicId}/detail")
     @ApiOperation("返回音乐详细信息[远程调用]")

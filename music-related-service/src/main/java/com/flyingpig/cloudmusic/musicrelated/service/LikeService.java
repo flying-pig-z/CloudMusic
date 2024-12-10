@@ -14,5 +14,7 @@ public interface LikeService {
 
     UserLikeInfo getLikeInfoByUserIdAndMusicId(Long userId, Long musicId);
 
-    List<MusicDetail> listLikeByUserId();
+    List<MusicDetail> listUserLike();
+
+    Integer getUserLikeNum();
 }

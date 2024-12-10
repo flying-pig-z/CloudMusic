@@ -42,7 +42,11 @@ public class SonglistMusicServiceImpl extends ServiceImpl<SonglistMusicMapper, S
     @Override
     public void addSonglistMusicList(List<SonglistMusic> songlistMusicList) {
         for (SonglistMusic songlistMusic : songlistMusicList) {
-            songlistMusicMapper.insert(songlistMusic);
+            if (songlistMusicMapper.selectCount(new LambdaQueryWrapper<SonglistMusic>()
+                    .eq(SonglistMusic::getSonglistId, songlistMusic.getSonglistId())
+                    .eq(SonglistMusic::getMusicId, songlistMusic.getMusicId())) == 0) {
+                songlistMusicMapper.insert(songlistMusic);
+            }
         }
     }
 

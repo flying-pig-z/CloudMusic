@@ -36,13 +36,14 @@ public class GlobalExceptionHandler {
 
     /**
      * 请求方法错误--405
+     *
      * @param e
      * @return
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public Result httpRequestMethodNotSupportedExceptionHandler(Exception e){
+    public Result httpRequestMethodNotSupportedExceptionHandler(Exception e) {
         log.error("请求方法错误");
-        return Result.error(StatusCode.METHODERROR,"请求方法错误");
+        return Result.error(StatusCode.METHODERROR, "请求方法错误");
     }
 
     /**
@@ -51,7 +52,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RedisConnectionFailureException.class)
     public Result edisConnectionFailureExceptionHandler(RedisConnectionFailureException e) {
         log.error("redis连接错误啦啦啦啦啦啦");
-        return Result.error(StatusCode.SERVERERROR,"redis连接错误啦啦啦啦啦啦");
+        return Result.error(StatusCode.SERVERERROR, "redis连接错误啦啦啦啦啦啦");
     }
 
 
@@ -61,7 +62,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public Result exceptionHandler(Exception e) {
         e.printStackTrace();
-        return Result.error(StatusCode.SERVERERROR,e.toString());
+        return Result.error(StatusCode.SERVERERROR, e.toString());
     }
 }
 

@@ -13,11 +13,11 @@ import java.util.UUID;
 
 
 public class AliOSSUtils {
+
     private static String endpoint = "";
     private static String bucketName = "";
     private static String accessKeyId = "";
     private static String accessKeySecret = "";
-
 
     /**
      * 实现上传图片到OSS
