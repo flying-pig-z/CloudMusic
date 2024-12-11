@@ -1,6 +1,6 @@
 package com.flyingpig.cloudmusic.music.service;
 
-import com.flyingpig.cloudmusic.music.dataobject.dto.MusicIdAndName;
+import com.flyingpig.cloudmusic.music.dataobject.dto.MusicSearchResult;
 import com.flyingpig.cloudmusic.music.dataobject.es.MusicDoc;
 import org.springframework.stereotype.Service;
 
@@ -13,5 +13,5 @@ public interface MusicSearchService {
 
     List<MusicDoc> searchMusicByEs(String keyword) throws IOException;
 
-    List<MusicIdAndName> searchMusic(String keyword);
+    List<MusicSearchResult> searchMusic(String keyword);
 }

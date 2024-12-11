@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MusicIdAndName {
+public class MusicSearchResult {
     private Long id;
     private String name;
 }

@@ -1,6 +1,6 @@
 package com.flyingpig.cloudmusic.music.controller;
 
-import com.flyingpig.cloudmusic.music.dataobject.dto.MusicIdAndName;
+import com.flyingpig.cloudmusic.music.dataobject.dto.MusicSearchResult;
 import com.flyingpig.cloudmusic.security.aop.BeforeAuthorize;
 import com.flyingpig.cloudmusic.music.service.MusicSearchService;
 import com.flyingpig.cloudmusic.web.Result;
@@ -28,7 +28,7 @@ public class MusicSearchController {
     @GetMapping("/search")
     @ApiOperation("根据关键词搜索音乐")
     public Result searchMusic(@RequestParam String keyword) {
-        List<MusicIdAndName> result = musicSearchService.searchMusic(keyword);
+        List<MusicSearchResult> result = musicSearchService.searchMusic(keyword);
         return Result.success(result);
     }
 
